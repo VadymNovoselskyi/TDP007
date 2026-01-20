@@ -94,32 +94,39 @@ class Level
 
 end
 
-level = Level.new()
 
 # Taken from:
 # https://stackoverflow.com/a/14527475
 def get_char
   state = `stty -g`
   `stty raw -echo -icanon isig`
-
+  
   STDIN.getc.chr
 ensure
   `stty #{state}`
 end
 
+if __FILE__ == $0
+  main()
+end
 
-while !level.is_complete()
-  system("clear")
+def main()
+  level = Level.new()
+
+  while !level.is_complete()
+    system("clear")
+    level.print_map()
+
+    puts("\n\nDo your move (wasd): ")
+    input = get_char()
+
+    case input.chomp
+    when "w" then level.move_player(0, -1)
+    when "a" then level.move_player(-1, 0)
+    when "s" then level.move_player(0, 1)
+    when "d" then level.move_player(1, 0)
+    end
+  end
   level.print_map()
 
-  puts("\n\nDo your move (wasd): ")
-  input = get_char()
-
-  case input.chomp
-  when "w" then level.move_player(0, -1)
-  when "a" then level.move_player(-1, 0)
-  when "s" then level.move_player(0, 1)
-  when "d" then level.move_player(1, 0)
-  end
 end
-level.print_map()
