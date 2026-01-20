@@ -1,0 +1,33 @@
+Design av spelet:
+För att implementera Sokoban använde vi oss av Level ADT i form av en enkel ADT. Level-klassen hanterar
+kartan, dess inläsning från fil och utritning i terminalen, 
+spelarens och lådornas förflyttning samt flera extra hjälpfunktioner. 
+Användarinmatning samt checks för om leveln är avklarad hanteras inuti game-loopen.
+
+Vi valde denna approach då detta inte är ett komplicerat program med strikta krav och detta gjorde programmet enkelt och lättläst. 
+De enkla delarna var filinläsning samt hantering av användarinmatning. Det som visade sig vara mer komplicerat än förväntat
+var att ta emot användarinmatning utan att behöva trycka Enter-knappen.
+
+Konstruktioner:
+En intressant språkkonstruktion var lambda-uttryck på .each_char funktionen på strängen som vi läste in från filen.
+
+För att underlätta användarinmatning och undvika att trycka Enter-knappen på varje move använde vi oss av 
+STDIN.getc.chr med lite extra kod för att hantera OS-signals. Lösningen hittade vi på StackOverflow.
+
+Reflektioner:
+Då vi båda programmerat mycket på fritiden samt lärt oss flera andra språk tidigare så var det inga större svårigheter 
+för någon av oss att börja lära oss ännu ett nytt språk. Då vi har mycket erfarenhet sedan tidigare inom programmering så var inte 
+programmeringstänket något nytt utan det var bara för oss att lära oss en ny syntax för hur man skriver i just detta språk. 
+
+Det största problemet vi stötte på i denna labb har inte något med språket i sig att göra utan hade med att sätta upp en utvecklingsmiljö.
+Vi försökte väldigt länge med att sätta upp en language server protocol samt formatterare och linters i VS-Code.
+
+Ett till problem vi stötte på då vi inte hade en LSP var att när vi skapade vår konstruktor för en klass så anropades den 
+inte på vid skapandet av klassen. Detta var dock inte för att något gick fel i språket utan det var att vi stavat fel på 'initialize'.
+
+Det vi använt för att lära oss syntaxen för språket är att vi har använt Google, StackOverflow samt ruby-docs.
+
+Det finns flera delar av språket som vi ogillar. Det första och största problemet vi har med ruby är att man inte behöver använda
+parenteser vid skapande eller anrop på funktioner eller metoder. Det vi också ogillar med funktioner är att man inte behöver använda
+ett return statement för att indikera vad som returneras från en funktion.
+
