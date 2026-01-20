@@ -2,11 +2,11 @@ require 'io/console'
 
 
 class Level 
-  def initialize()
+  def initialize(filename = "sokoban_level.txt")
     @map = [[]]
     @player_x = 0
     @player_y = 0
-    load_map("sokoban_levels.txt")
+    load_map(filename)
   end
 
   def load_map(filename)
@@ -106,10 +106,6 @@ ensure
   `stty #{state}`
 end
 
-if __FILE__ == $0
-  main()
-end
-
 def main()
   level = Level.new()
 
@@ -129,4 +125,8 @@ def main()
   end
   level.print_map()
 
+end
+
+if __FILE__ == $0
+  main()
 end
