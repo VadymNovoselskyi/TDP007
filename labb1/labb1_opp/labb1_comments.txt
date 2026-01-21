@@ -4,10 +4,49 @@ Man skulle kunnat använda sig av OOP för att undvika global variabel $board
 until is nice instead of (while !)
 Sparar \n i board
 
-Markus: Hur koden funkar 
+Markus: Hur koden funkar
+
+Enkel uppgift
+inte mycket kod
+Inte OOP
+bra strukturerad
+funktioner med tydligt syffte
+
+
+använder global variabel för att spara kartan
+
+
+array av arrayer
+
+Flera hjälpfunktioner för hantera kodflow
+ex: make_board, display_board, move_player
+
+de har också funktioen get_input som används för att hämta input utan att man ska behöva klicka på enter
+
+Sköta game flow:
+until loop
+case sats
+kallar på en och samma move funktion
 
 Vadym: Hur det är jämfört med vår
 
 Markus: Tekniker i kod
+
+Tolkat uppgiften på ett normalt sätt
+Inga uppenbara buggar eller problem
+
+
+Använder många standard tekniker som funktioner, if satser och for loopar
+
+lite mer Ruby spesifik implementation
+File för att öppna och läsa filer
+
+.each samt each_char loop med ett lambda uttryck
+använder en array av arrayer och appendar med <<
+de har en global variabel med $
+de använder unless
+de använder en untill loop
+
+
 
 Vadym: Kodningstil och tester
