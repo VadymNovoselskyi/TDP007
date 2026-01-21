@@ -1,0 +1,13 @@
+move_box and move_player have unused variables
+Man skulle kunnat använda sig av OOP för att undvika global variabel $board
+
+until is nice instead of (while !)
+Sparar \n i board
+
+Markus: Hur koden funkar 
+
+Vadym: Hur det är jämfört med vår
+
+Markus: Tekniker i kod
+
+Vadym: Kodningstil och tester
