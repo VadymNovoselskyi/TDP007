@@ -73,3 +73,7 @@ har enkla beskrivade kommentar på funktioner
 testar dem flesta funktionerna med enkla testfall
 Kunde utveckla mer att hantera edgecases, 
 såsom att knuffa lådan från storage, eller box to wall/box
+
+utvecklarbloggen var lättläst
+de tog upp intressanta synpunkter på Ruby jämfört med C++,
+och beskrev hur inlärningen och problemlösningen gick
