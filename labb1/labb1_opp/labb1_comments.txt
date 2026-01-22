@@ -28,7 +28,19 @@ until loop
 case sats
 kallar på en och samma move funktion
 
+--------------------------------
+
 Vadym: Hur det är jämfört med vår
+
+Ganska liknande funktioner som vi har, t.ex make/display_board, get/set_chat, win_check osv. 
+Fungerar på lite olika sätt, men i stora drag nästan identiskt.
+
+Vi använda oss av en klass för att hantera kartan och dess hjälp funktioner
+istället för att ha kartan som globala variabler.
+
+har lite mer Ruby spesifik implementation, såsom .each, until, return ... if/unless (???)
+
+--------------------------------
 
 Markus: Tekniker i kod
 
@@ -47,6 +59,17 @@ de har en global variabel med $
 de använder unless
 de använder en untill loop
 
-
+--------------------------------
 
 Vadym: Kodningstil och tester
+
+Försökt använda sig av Ruby spesifisk styl som implicita return där det fungerar,
+inga paranteser om anropar funktioner utan parametrar
+
+tydliga variabel- och funktionsnamn
+
+har enkla beskrivade kommentar på funktioner
+
+testar dem flesta funktionerna med enkla testfall
+Kunde utveckla mer att hantera edgecases, 
+såsom att knuffa lådan från storage, eller box to wall/box
