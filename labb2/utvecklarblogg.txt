@@ -1,0 +1,21 @@
+Utvecklarblogg seminarium 2
+Att lära oss ruby har gått bra och vi har inte haft några svårigheter eller stött på några fler problem sedan förra labben. 
+Vi har fortfarande inte lyckats lösa så vi har en fungerande LSP så vi använder oss ganska flitigt av ruby docs för att kolla vilka funktioner som existerar på vilka klasser.
+
+Några grejer som vi tyckte var otydliga i instruktionen var i uppgift 1 hur man skulle rangordna lagen baserat på målskillnad. Vi var osäkra på om målskillnaden får vara negativ eller inte.
+Vi valde att tolka det som man brukar göra i en serietabell och tolka det som att man får gå negativt. MAO släpper man in fler mål än man gör så har man negativ målskillnad.
+
+DRY:
+Vi upplevde att den enda delen av koden som inte kunde återanvändas var parsing delen. Detta var då weather filen kunde ha rader som inte hade data i sig medan football alltid hade data på varje rad.
+De funktioner vi återanvände var sorteringsfunktionen och hitta lägsta skillnaden. 
+
+När vi började på uppgift 2 del 1 så började vi med att skapa variabler för att hålla koll på hur många lager ner i XML dokumentet vi kommit samt variabler som tex is_in_entryLinks för att kolla om någon av parent
+taggarna hade varit en entryLinks tag. Men när vi jobbat på detta sätt ett tag och skapat flertalet variabler för att hålla koll på parent tags så kom vi på en bättre lösning. Det var att använda en array som en typ av stack. 
+Det vi gjorde var lägga till i den arrayen varje gång man når en start tag och sedan ta bort den senaste när man når en sluttag. Detta gjorde så våran kod blev mycket mer lättläst och enkel att jobba med.
+Något som detta också gjorde var att vi kunde väldigt enkelt konvertera våran stream parser till att använda XPath med en DOM parser. 
+
+Vår SAX parser var i början väldigt komplicerad och vi behövde göra en hel del felsökning. Det som vi gjorde då var att vi debuggade det steg för steg. Kollar först om vi är i den tag vi förväntar oss att vara i sedan kollar vi 
+dess parents och children. Det viktigaste är att dela upp problemet i mindre delar som man enklare kan testa.
+
+Något som vi tyckte gjorde det enklare att förstå och tolka ett XML dokument var att använda de inbyggda funktioner i vs-code och flika ner datan så man bara kollar på ett lager åt gången. 
+Något som underlättar ännu mer är att använda ctrl+f och använda den inbyggda sökfunktionen för att leta efter de tags eller värden man vill. 
