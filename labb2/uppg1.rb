@@ -8,8 +8,8 @@ def sort_by(data, &transform_fn)
     return sorted
 end
 
-def get_football_hash()
-    file = File.new("football.txt")
+def get_football_hash(filename = "football.txt")
+    file = File.new(filename)
     text = file.read()
     content = text.split("<pre>")[1]
 
@@ -27,9 +27,8 @@ def get_football_hash()
     return hash
 end
     
-def print_lowest_football_team(hash)
-    val = get_lowest(hash) { | a | (a[1][4]- a[1][5]).abs() }
-    puts "The team with the lowest diff is:", val[0]
+def get_lowest_football_team(hash)
+    return get_lowest(hash) { | a | (a[1][4]- a[1][5]).abs() }
 end
 
 def sort_by_goals(hash)
@@ -38,8 +37,8 @@ def sort_by_goals(hash)
     sorted.each { | entry | print entry[0] + "; diff: " + (entry[1][4] - entry[1][5]).to_s + "\n" }
 end
 
-def get_weather_data()
-    file = File.new("weather.txt")
+def get_weather_data(filename = "weather.txt")
+    file = File.new(filename)
     text = file.read()
     content = text.split("<pre>")[1]
 
@@ -73,9 +72,8 @@ def get_weather_data()
     return data
 end
 
-def print_lowest_temp_diff(data)
-    val = get_lowest(data) { | a | a[1]- a[2] }
-    print "The day with the lowest temp diif is: ", val[0], "\n"
+def get_lowest_temp_diff(data)
+    return get_lowest(data) { | a | a[1]- a[2] }
 end
 
 def sort_by_temp_diff(data)
@@ -87,9 +85,11 @@ end
 
 if __FILE__ == $0
   hash = get_football_hash()
-  print_lowest_football_team(hash)
+  lowest_team = get_lowest_football_team(hash)
+  puts "The team with the lowest diff is:", lowest_team[0]
   sort_by_goals(hash)
   data = get_weather_data()
-  print_lowest_temp_diff(data)
+  lowest_diff = get_lowest_temp_diff(data)
+  print "The day with the lowest temp diif is: ", lowest_diff[0], "\n"
   sort_by_temp_diff(data)
 end
