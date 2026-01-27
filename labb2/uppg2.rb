@@ -12,7 +12,7 @@ class MyListener
         @path.append(name)
         
         if (@path == ["catalogue", "entryLinks", "entryLink"])
-            handle_entryLink(name, attrs)
+            handle_entryLink(attrs)
         end
 
         if (@path == ["catalogue", "sharedSelectionEntries", "selectionEntry"])
@@ -20,11 +20,11 @@ class MyListener
         end
 
         if (@path == ["catalogue", "sharedSelectionEntries", "selectionEntry", "costs", "cost"]) 
-            handle_cost(name, attrs) 
+            handle_cost(attrs) 
         end
     end
 
-    def handle_entryLink(name, attrs) 
+    def handle_entryLink(attrs) 
         
         if (attrs.has_key?("hidden"))
             return
@@ -32,7 +32,7 @@ class MyListener
         $units[attrs["name"]] = 0
     end
 
-    def handle_cost(name, attrs)
+    def handle_cost(attrs)
         if (attrs["name"] != "pts")
             return
         end
@@ -50,7 +50,7 @@ def stream_parser()
     
     listener = MyListener.new()
     REXML::Document.parse_stream(file, listener)
-    puts $units
+    return $units
 
 end
 
@@ -67,11 +67,13 @@ def dom_parser()
         unit_name = entry.attributes.get_attribute("name").value
         entry.elements.each("costs/cost[@name='pts']") {| item | units[unit_name] = item.attributes.get_attribute("value").value}
     end
-    puts units
+    return units
 end
 
 
 if __FILE__ == $0
-    stream_parser()
-    dom_parser()
+    stream_units = stream_parser()
+    puts "Stream parsed units: ", stream_units
+    dom_units = dom_parser()
+    puts "DOM parsed units: ", dom_units
 end
