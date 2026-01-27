@@ -1,10 +1,6 @@
 require 'rexml/streamlistener'
 require 'rexml/document'
 
-file = File.new("Imperium-Imperial-Knights_Library.xml")
-
-$units = Hash.new()
-
 class MyListener
     include REXML::StreamListener
     def initialize()
@@ -48,23 +44,34 @@ class MyListener
     end
 end
 
-listener = MyListener.new
-
-REXML::Document.parse_stream(file, listener)
-
-#puts $units
-file = File.new("Imperium-Imperial-Knights_Library.xml")
-
-dom = REXML::Document.new (file)
-
-units2 = Hash.new()
-
-dom.elements.each("/catalogue/entryLinks/entryLink[not(@hidden)]") { | item | units2[item.attributes.get_attribute("name").value] = 0 }
-
-dom.elements.each("/catalogue/sharedSelectionEntries/selectionEntry") do | entry |
-    unit_name = entry.attributes.get_attribute("name").value
-    entry.elements.each("costs/cost[@name='pts']") {| item | units2[unit_name] = item.attributes.get_attribute("value").value}
+def stream_parser()
+    file = File.new("Imperium-Imperial-Knights_Library.xml")
+    $units = Hash.new()
     
+    listener = MyListener.new()
+    REXML::Document.parse_stream(file, listener)
+    puts $units
+
 end
 
-puts units2
+def dom_parser()
+    file = File.new("Imperium-Imperial-Knights_Library.xml")
+    
+    dom = REXML::Document.new (file)
+    
+    units = Hash.new()
+    
+    dom.elements.each("/catalogue/entryLinks/entryLink[not(@hidden)]") { | item | units[item.attributes.get_attribute("name").value] = 0 }
+    
+    dom.elements.each("/catalogue/sharedSelectionEntries/selectionEntry") do | entry |
+        unit_name = entry.attributes.get_attribute("name").value
+        entry.elements.each("costs/cost[@name='pts']") {| item | units[unit_name] = item.attributes.get_attribute("value").value}
+    end
+    puts units
+end
+
+
+if __FILE__ == $0
+    stream_parser()
+    dom_parser()
+end
