@@ -8,6 +8,10 @@ Markus: Hur koden funkar
 
 Vadym: Hur det är jämfört med vår
 
+Hela/delar parsning av XML, RegEx
+
+SAX använder stack
+
 ------------------------------------------------------------
 
 Markus: Tekniker i kod
@@ -16,7 +20,22 @@ Markus: Tekniker i kod
 
 Vadym: Kodningstil, tester och utvecklarblogg
 
-Tester var bra
+Kodningstil:
+uppg1 och uppg2 DOM använder sig av 'camelCase' fast uppg2 SAX använder sig av 'snake_case'
+testerna för uppg1 använder sig av 'test_functionName' (även 'test_FunctionName')
+och testerna för uppg2 använder sig av 'test_function_name' 
+även om function_name i originalfilen är skriven med 'camelCase'
+Det ser ut att den gruppen kom inte överens om kodningstil alls.
 
+Funktionsnamn och variablesnamn var till den största delen är bra
+De hade för många kommentarer och mest av dem är onödiga
+
+Tester:
+Testerna var relativt bra för att de testade alla funktioner, men var inte tillräckligt täckande. 
+T.ex i uppg1 kontrollerar de endast första och sista entries i listan, men inte allt som står emellan.
+De har inte heller testat med andra filler än det som gavs i uppgiften - 
+dvs de testade inte att deras kod fungerar för andra filer av liknande struktur.
+
+Utvecklarblogg:
 Deras utvecklarblogg är uppbugd som en dagbok med förklaring av kod, och tar inte upp:
-reflektioner kring lärondemoment, Rube, själva uppgifter eller tolkningar av uppgifter
+reflektioner kring lärondemoment, Rube, själva uppgifter eller tolkningar av uppgifter.
