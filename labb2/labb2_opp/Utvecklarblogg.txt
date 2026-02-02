@@ -1,0 +1,45 @@
+2026-01-23
+Självständigt arbete (10:00-12:00, 12:20-13:15):
+Efter att ha deltagit på föreläsning 3 där uppmärkningsspråk togs upp gick vi vidare till LIS-salarna. Tyvärr kände ingen av oss att vi fick ut särskilt
+mycket av föreläsningen och fick därför en trög start på Seminarie 2.
+
+Vi fick snabbt problem med att använda reguljära uttryck för att sortera bort de oönskade elementen i textfilen.
+
+Laboration (13:15-15:00):
+Vi började komma igång med den grundläggande strukturen av funktionerna.
+
+2026-01-26
+Laboration (13:15-15:00):
+Vi inledde laborationen med att visa upp våra något annorlunda lösningar på weather.txt delen av uppgift 1 då vi arbetade på skilda håll
+under helgen. Efter det satte vi igång och började titta på uppgift 2.1 av seminarie 2. Vi valde att dela upp uppgifterna i olika filer
+så att del 1 och 2 blev separata delar av seminariet.
+
+Eftersom denna del av uppgiften handlar om hantering av XML-dokument behövde vi börja använda oss av SAX-parsning. För att hitta den
+eftersökta datan behövde vi först ta fram de relevanta taggarna. Det var svårt att hitta i XML-filen och större delen av laborationen
+gick åt att förstå hur vi skulle gå till väga.
+
+2026-01-28
+Självständigt arbete (09:00-12:30):
+Vi började arbeta med Sax-parsningen och fick fram en variant där vi lägger till namnet på alla karaktärer som nycklar i en hash, alla har
+ursprungligen värdet nil. Sedan för att tilldela varje karaktär sitt korrekta värde letar vi först upp det korrekta namnet igen på grund av att den inte skulle 
+sparas om vi sparar namnet vid samma if sats, troligtvis på grund av att vi behöver flytta oss till ett helt annat ställe. Efter det letar vi upp karaktärens pris 
+och ger det värdet till nyckeln. Anledningen till att vi först sparar värdet till nil är för att sedan kunna testa att alla karaktärer har fått ett pris genom att kolla om det inte är nil.
+
+En skillnad vi märkte efter att vi körde enhetstesterna var att testerna för DOM-parsningen tog betydligt längre tid än den för SAX-parsning. Detta beror
+på teknikernas uppbyggnad, då DOM-parsning är lättare att få ut önskad data, men kräver mer minne medan i SAX-parsning är det oftast svårare/krångligare att få ut rätt
+data, men kräver mycket mindre minne. 
+
+2026-01-29
+Laboration (10:15-12:00):
+En sak som vi upptäckte när vi körde enhetstesterna för SAX-parsningen var att den sista karaktären i hashen (Knight Valiant) fick värdet 415 istället för dess faktiska värde (410).
+Detta berodde på att så som koden såg ut just då, fortsatte värdet på en variabel att ändras och inkluderade namn på karaktärer som var gömda. Den sista karaktären i hashen bytte
+därför värde ett antal gånger tills den fick värdet av en annan karaktär. Detta löste vi genom att sätta värdet på variabeln till en tom sträng som inte ändras så länge karaktären inte 
+är gömd.
+
+Vi kände att det var enklare att dela upp DOM-parsningen i två delar där vi först hämtade namnen och sedan deras pris. 
+Detta gjorde det enklare att skapa mer tester och kunna se till att vi fick rätt data, 
+jämfört med SAX-parsning då vi tog ut all data på en och samma gång vilket gjorde att vi behövde göra tester med all data.
+
+2026-01-30
+Självständigt arbete (10:00-11:40):
+Det enda vi gjorde idag var att göra kvalitetskontroll och finjustera koden på vissa ställen (framförallt i enhetstesterna). Sedan lämnade vi in.
