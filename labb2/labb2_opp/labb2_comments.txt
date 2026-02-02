@@ -4,8 +4,19 @@ regex patterns har onödiga delar. Ex ta bort onödiga /m flaggor samt byta ut ^
 
 Markus: Hur koden funkar
 
+------------------------------------------------------------
+
 Vadym: Hur det är jämfört med vår
+
+------------------------------------------------------------
 
 Markus: Tekniker i kod
 
+------------------------------------------------------------
+
 Vadym: Kodningstil, tester och utvecklarblogg
+
+Tester var bra
+
+Deras utvecklarblogg är uppbugd som en dagbok med förklaring av kod, och tar inte upp:
+reflektioner kring lärondemoment, Rube, själva uppgifter eller tolkningar av uppgifter
