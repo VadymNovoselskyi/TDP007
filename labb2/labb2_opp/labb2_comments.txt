@@ -3,6 +3,59 @@ regex patterns har onödiga delar. Ex ta bort onödiga /m flaggor samt byta ut ^
 
 
 Markus: Hur koden funkar
+Uppgift 1
+
+main funktion flera hjälp, generella funktioner
+
+löser båda uppgifterna med samma mönster
+
+börjar med 
+läsa in och delvis parsa fil
+getTextFromTag:  Matchar allt mellan <pre> och </pre>
+
+separat funktion beroende på weather eller football
+
+sedan kallar på
+sortByDifference: sorterar arrayen
+
+många regex matchningar
+vissa kunte göras enklare. Ta bort onödiga flaggor
+
+parsar inte hela filen
+
+SAX:
+snygg lösning
+kunde gjorts minimalt enklare
+sparar i en hash
+sparar en "stack" / "path"
+
+tag_start
+gör många jämförelser med "tagname" ist för att lägga till i path och bara använda den
+
+tag_end
+tar bort senaste entryn i path
+
+
+DOM
+ochså snygg lösning
+Ganska bra XPATH filtrering.
+Funkar bra för denna fil
+Kunde göras mer specifik fört att undvika eventuella fel i framtiden 
+
+
+SKRIV UT!!!!!!
+/(\d*)\s+-\s (\d*)/m 
+
+/(\d+)\s+-\s+(\d+)/
+------------------------------------------------------------
+/catalogue/entryLinks/*[count(@hidden)=0]
+
+/catalogue/entryLinks/entryLink[count(@hidden)=0]
+
+-||- [not(@hidden)]
+------------------------------------------------------------
+//selectionEntry
+
 
 ------------------------------------------------------------
 
