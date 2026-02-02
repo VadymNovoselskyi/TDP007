@@ -1,0 +1,11 @@
+Vi parsar hela filen medans de parsar bara den delen som behövs för uppgiften
+regex patterns har onödiga delar. Ex ta bort onödiga /m flaggor samt byta ut ^\s mot \S
+
+
+Markus: Hur koden funkar
+
+Vadym: Hur det är jämfört med vår
+
+Markus: Tekniker i kod
+
+Vadym: Kodningstil, tester och utvecklarblogg
