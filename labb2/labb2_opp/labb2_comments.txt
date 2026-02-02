@@ -47,23 +47,41 @@ SKRIV UT!!!!!!
 /(\d*)\s+-\s (\d*)/m 
 
 /(\d+)\s+-\s+(\d+)/
-------------------------------------------------------------
+----------------------------------------
 /catalogue/entryLinks/*[count(@hidden)=0]
 
 /catalogue/entryLinks/entryLink[count(@hidden)=0]
 
 -||- [not(@hidden)]
-------------------------------------------------------------
+----------------------------------------
 //selectionEntry
 
 
-------------------------------------------------------------
+----------------------------------------
 
 Vadym: Hur det är jämfört med vår
 
-Hela/delar parsning av XML, RegEx
+Uppg1: ---------------------------------
+Vi tog annorlunda approaches gällande data-parsing:
+De parsade endast dem delar som användes i uppgifter
+(dvs F och A kolumner för football och första fyra kolumner för weather)
+Vi parsade allt data som fanns
 
-SAX använder stack
+För att parsa data:
+De använde sig mycket av regex
+Vi använde oss av regex men också split och indexering i strings
+
+Uppg2: ---------------------------------
+Vi använde samma metod för att hålla koll på
+var i XML vi befinner oss - en stack struktur 
+(path och stack)
+
+Vi sparade också unit_prices i en Hash och sparade sista unit_name i en variabel
+
+Vi använde oss av 0 som placeholder price istället för nil 
+(de kunde enklare testa att det finns pris för alla units)
+
+DOM parser var också strukturerad likadant ut förutom tidigare nämnt XPath optimeringar
 
 ------------------------------------------------------------
 
