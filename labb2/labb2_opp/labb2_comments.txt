@@ -87,6 +87,12 @@ DOM parser var också strukturerad likadant ut förutom tidigare nämnt XPath op
 
 Markus: Tekniker i kod
 
+Inga andra tekniker än de som specificeras i instruktionen.
+
+Använder RegEx i första delen av uppgiften
+Använder en stream parser för SAX parser delen
+Använder REXML som DOM parser
+
 ------------------------------------------------------------
 
 Vadym: Kodningstil, tester och utvecklarblogg
