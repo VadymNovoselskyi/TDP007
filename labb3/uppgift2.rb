@@ -411,54 +411,45 @@ end
 #
 ##############################################################################
 
-class DiceRoller
-        
-  def DiceRoller.roll(times, sides)
-    # Throw "sides" sided dice "times" times and return the total
-    result = (1..times).inject(0) {|sum, _| sum + rand(sides) + 1 }
-
-    # Need to get a new instance since this is a class method
-    LoggerFactory.get().info("Rolled #{times}d#{sides} getting #{result}")
-
-    return result
-  end
+class LangParser
   
-  def initialize
+  def initialize()
 
     @logger = LoggerFactory.get()
 
-    @diceParser = Parser.new("dice roller") do
+    @langParser = Parser.new("lang parser") do
       token(/\s+/) # Ignore whitespace
-      token(/\d+/) {|m| m.to_i } # Any string of digits is converted to an Integer
-      token(/./) {|m| m }
+      # token(/true/) { true }
+      # token(/false/) { false }
+      token(/\w+\b|\(|\)/) {|m| m }
       
-      start :expr do 
-        match(:expr, '+', :term) {|a, _, b| a + b }
-        match(:expr, '-', :term) {|a, _, b| a - b }
-        match(:term)
-      end
-      
-      rule :term do 
-        match(:term, '*', :dice) {|a, _, b| a * b }
-        match(:term, '/', :dice) {|a, _, b| a / b }
-        match(:dice)
+      start :valid do
+        match(:assign)
+        match(:expr)
       end
 
-      rule :dice do
-        match(:atom, 'd', :sides) {|a, _, b| DiceRoller.roll(a, b) }
-        match(:atom)
+      rule :assign do
+        match('(', 'set', :var, :expr, ')') do |_, _, var, expr, _ |
+          LangParser.class_eval("attr_accessor :#{var}")
+          instance_eval("@#{var}=#{expr}")
+        end
       end
-      
-      rule :sides do
-        match('%') { 100 }
-        match(:atom)
+
+      rule :expr do 
+        match('(', 'or', :expr, :expr, ')') { |_ ,_, a, b,_ | a || b }
+        match('(', 'and', :expr, :expr, ')') { |_ ,_, a, b,_ | a && b }
+        match('(', 'not', :expr, ')') { |_ ,_, a,_ | !a }
+        match(:term)
       end
-      
-      rule :atom do
-        # Match the result of evaluating an integer expression, which
-        # should be an Integer
-        match(Integer)
-        match('(', :expr, ')') {|_, a, _| a }
+
+      rule :term do 
+        match("true") { true }
+        match("false") { false }
+        match(:var)
+      end
+
+      rule :var do
+        match(String) 
       end
     end
   end
@@ -467,30 +458,28 @@ class DiceRoller
     ["quit","exit","bye","done",""].include?(str.chomp)
   end
   
-  def roll
-    print "[diceroller] "
+  def parse
+    print "[parser] "
     str = gets
     if done(str) then
       puts "Bye."
     else
-      puts "=> #{@diceParser.parse str}"
-      roll
+      puts "=> #{@langParser.parse str}"
     end
-
   end
 
 end
 
 # Examples of use
 
-# irb(main):1696:0> DiceRoller.new.roll
-# [diceroller] 1+3
+# irb(main):1696:0> LangParser.new.roll
+# [LangParser] 1+3
 # => 4
-# [diceroller] 1+1d4
+# [LangParser] 1+1d4
 # => 2
-# [diceroller] 1+1d4
+# [LangParser] 1+1d4
 # => 3
-# [diceroller] (2+8*1d20)*3d6
+# [LangParser] (2+8*1d20)*3d6
 # => 306
 
-DiceRoller.new.roll
+LangParser.new.parse

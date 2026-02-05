@@ -8,3 +8,7 @@ EXPR ::= TERM
 TERM ::= VAR
 TERM ::= 'true'
 TERM ::= 'false'
+
+
+(set xyz (or true false))
+(set xyz (and true (not true)))
