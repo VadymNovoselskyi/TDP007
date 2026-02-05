@@ -465,6 +465,7 @@ class LangParser
       puts "Bye."
     else
       puts "=> #{@langParser.parse str}"
+      parse()
     end
   end
 
@@ -482,4 +483,4 @@ end
 # [LangParser] (2+8*1d20)*3d6
 # => 306
 
-LangParser.new.parse
+LangParser.new.parse()
