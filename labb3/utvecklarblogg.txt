@@ -1,9 +1,8 @@
 Utvecklarblogg seminarium 3
 Uppgift 1.
 Att programmera koden till uppgift 1 tog inte lång tid utan det som tog lång tid var att komma på en bra och generisk design på hur vårt policy dokument skulle se ut.
-Vi förstod direkt att för att lösa uppgiften behöver vi ha en del logik i method_missing funktionen för att kunna räkna ut premien.
 Vi började med att skapa en klass för att representera en person. När klassen var klar så började vi fundera på hur vi skulle strukturera datan.
-Då vi behöver använda eval funktionen förstod vi direkt att vi kommer behöva använda oss av method_missing funktionen för att parsa datan.
+Då vi behöver använda instance_eval funktionen förstod vi direkt att vi kommer behöva använda oss av method_missing funktionen för att parsa datan.
 
 Vår första implementation där vi försökte använda exakt samma format som det stod i tabellen, värdet först och sedan siffran efter med ett uttryck per rad fungerade inte bra då vi stötte på problem direkt. Ex.
 
