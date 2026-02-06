@@ -1,0 +1,53 @@
+Utvecklarblogg seminarium 3
+Uppgift 1.
+Att programmera koden till uppgift 1 tog inte lång tid utan det som tog lång tid var att komma på en bra och generisk design på hur vårt policy dokument skulle se ut.
+Vi förstod direkt att för att lösa uppgiften behöver vi ha en del logik i method_missing funktionen för att kunna räkna ut premien.
+Vi började med att skapa en klass för att representera en person. När klassen var klar så började vi fundera på hur vi skulle strukturera datan.
+Då vi behöver använda eval funktionen förstod vi direkt att vi kommer behöva använda oss av method_missing funktionen för att parsa datan.
+
+Vår första implementation där vi försökte använda exakt samma format som det stod i tabellen, värdet först och sedan siffran efter med ett uttryck per rad fungerade inte bra då vi stötte på problem direkt. Ex.
+
+bmw 5
+citroen 4
+58937 9
+
+Problemet vi stötte på var att ruby inte kan ha en funktion som börjar på en siffra så method_missing funktionen kallades aldrig. Detta gjorde så vi direkt skrotade den approachen.
+Vi försökte då hitta på ett bra sätt som vi kunde representera bara siffror fast som en string och den bästa lösningen vi kom på då var att sätta ett underscore innan alla värden. Ex.
+
+_bmw 5
+_citroen 4
+_58937 9
+
+Denna approach funkade bra och vi kunde parsa all data förutom den datan som var intervall. Detta var då vi först försökte representera ett intervall med ett bindesträck men då märkte vi att ett bindesträck 
+inte heller får vara en del av ett funktionsnamn. Då bestämde vi oss för att också använda underscore för att indikera att det är ett intervall. Ex.
+
+_bmw 5
+_citroen 4
+_58937 9
+_0_1 3
+_M 1
+_18_20 2.5
+
+Denna approach funkade väldigt bra och vi löste nästan hela labben. Det enda problemet var att vi inte kunde urskilja vilket värde på personen vi skulle jämföra med. Vi började då med att skriva olika regexar för att
+matcha de olika värdena för att lista ut vilket värde i klassen man skulle jämföra med. Vi använde exempelvis regexen /\A\w{1}/ för att matcha om det var kön vi skulle jämföra med. Men då stötte vi på ett till problem,
+vi kunde inte urskilja om vi skulle jämföra erfarenhet eller ålder då de båda matchar samma regex. Det vi tänkte då var att för just ålder regexen skriva något innan det första underscore. Ex.
+
+age_18_20
+
+Men när vi började med detta så kom vi på att vi skulle kunna göra en mycket enklare att jobba med våran policy.rb om vi gav alla värden ett namn först. Ex.
+
+car_bmw 5
+car_citroen 4
+code_58937 9
+experience_0_1 3
+gender_M 1
+ages_18_20 2.5
+
+Det som detta också gjorde var att vi då kunde ta bort alla regex värden och göra våran lösning väldigt generisk då vi inte behövde hårdkoda vilka värden som man kunde jämföra med. Så det våran kod gör är att vi börjar med att 
+dela upp namnet på funktionen vi får in i method_missing funktionen på det första underscore vi hittar. Då har vi två delar. Den variabel vi vill jämföra med samt ett värde. Sedan kollar vi om det värdet vi vill jämföra med innehåller 
+ett underscore. Gör det de så vet vi att det är ett range. Sedan har vi två funktioner som hanterar om det är ett range vi vill jämföra med eller om det är ett enskilt värde. För att sedan ta reda på värdet som finns på personen
+vi vill räkna på använder vi instance_eval tillsammans med de namnet vi fick in. 
+
+Denna lösning gör så man enkelt kan lägga till värden på en person och sedan enkelt kunna använda det i våran policy fil. 
+
+Uppgift 2.
