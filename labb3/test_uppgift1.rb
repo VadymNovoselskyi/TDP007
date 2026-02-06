@@ -7,7 +7,7 @@ class TestPolicy < Test::Unit::TestCase
   end
 
   def test_evaluate_policy()
-    person2 = Person.new("BMV","58937",88,"W",35)
+    person2 = Person.new("BMW","58937",88,"W",35)
     person3 = Person.new("Open","58647",2,"W",18)
 
     assert_equal(15.66, @person.evaluate_policy("policy.rb"))
@@ -16,7 +16,7 @@ class TestPolicy < Test::Unit::TestCase
   end
 
   def test_method_missing()
-    @person.car_BMV(1)
+    @person.car_BMW(1)
     assert_equal(0, @person.instance_eval("@points"))
 
     @person.car_Volvo(10)
