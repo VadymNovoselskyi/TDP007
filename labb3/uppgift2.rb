@@ -487,4 +487,6 @@ end
 # [LangParser] (2+8*1d20)*3d6
 # => 306
 
-LangParser.new.parse()
+if __FILE__ == $0
+  LangParser.new.parse()
+end

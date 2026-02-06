@@ -47,5 +47,7 @@ class Person
 
 end
 
-kalle=Person.new("Volvo","58435",2,"M",32)
-puts kalle.evaluate_policy("policy.rb")
+if __FILE__ == $0
+    kalle=Person.new("Volvo","58435",2,"M",32)
+    puts kalle.evaluate_policy("policy.rb")
+end
