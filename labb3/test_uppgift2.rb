@@ -70,4 +70,10 @@ class TestParser < Test::Unit::TestCase
     assert_equal(false, @parser.langParser.parse("(or (and true false) (not true))"))
     assert_equal(true, @parser.langParser.parse("(or (and true false) (not false))"))
   end
+
+  def test_errors()
+    assert_raise(Parser::ParseError) { @parser.langParser.parse("set a false") }
+    assert_raise(SyntaxError) { @parser.langParser.parse("(set a false") }
+    assert_raise(Parser::ParseError) { @parser.langParser.parse("or true false)") }
+  end
 end
