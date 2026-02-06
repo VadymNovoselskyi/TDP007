@@ -412,9 +412,8 @@ end
 ##############################################################################
 
 class LangParser
-  
+  attr_reader :langParser
   def initialize()
-
     @logger = LoggerFactory.get()
 
     @langParser = Parser.new("lang parser") do
