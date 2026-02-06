@@ -429,7 +429,7 @@ class LangParser
       end
 
       rule :assign do
-        match('(', 'set', :var, :expr, ')') do |_, _, var, expr, _ |
+        match('(', 'set', :var_name, :expr, ')') do |_, _, var, expr, _ |
           LangParser.class_eval("attr_accessor :#{var}")
           instance_eval("@#{var}=#{expr}")
         end
@@ -445,11 +445,15 @@ class LangParser
       rule :term do 
         match("true") { true }
         match("false") { false }
-        match(:var)
+        match(:var_value)
       end
 
-      rule :var do
+      rule :var_name do
         match(String) 
+      end
+
+      rule :var_value do
+        match(String) { | var | instance_eval("@#{var}")}
       end
     end
   end
