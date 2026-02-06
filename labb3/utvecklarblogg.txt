@@ -50,3 +50,8 @@ vi vill räkna på använder vi instance_eval tillsammans med de namnet vi fick 
 Denna lösning gör så man enkelt kan lägga till värden på en person och sedan enkelt kunna använda det i våran policy fil. 
 
 Uppgift 2.
+Denna uppgift hade en mycket striktare struktur vilket ledde till att nästan all tid spenderades på implementation och inte på att designa ett system. 
+Vi började med att läsa igenom all DiceRoller kod och förstå hur den fungerade. När vi kände oss bekväma med hur den fungerade så började vi modifiera den så den passade vårt ändamål.
+Det första vi modifierade var regexen som bestämmer hur man ska tokeniza inputen. Våran regex ser ut så här: /\w+\b|\(|\)/ och matchar ett ord samt parenteser. Vi ändrade sedan på implementationen för rules parsning.
+Vi implementerade sedan alla delar från den givna grammatiska specifikationen. När vi följde specifikationen så lyckades vi inte implementera användning av de variabler man definierat. Detta gjorde så vi modifierade 
+våra parsningregler till att skilja på namn på variabler och värden på variabler.
