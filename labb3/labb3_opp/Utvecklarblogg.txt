@@ -1,0 +1,75 @@
+2026-02-05
+Självständigt arbete (12:30-13:15):
+Innan vi satte igång med att börja arbeta på Seminarie 3 valde vi att kolla på våra lösningar till den första övningen i Föreläsning 5. Vilket vi 
+båda hade gjort tidigare. Båda våra lösningar var hyfsat lika och byggde på den kod som redan hade tagits upp på föreläsningen. De viktigaste 
+komponenterna var såklart konstruktorn, en ursprungsfunktion och funktionen "method_missing".
+
+Laboration (13:15-15:00):
+Vi började med att fundera över hur DSL;en borde se ut. Vi var först osäkra på hur metodanropen skulle skrivas men kom överens om att vi förmodligen 
+borde skriva samma anrop flera gånger, alltså en gång för varje värde. Eftersom uppgiften också säger att vi ska skapa metoderna för 
+beräkningen borde "method_missing" förmodligen inte behövas.
+
+2026-02-06
+Självständigt arbete (10:00-11:45, 12:20-13:15):
+Efter att vi hade gått hem igår valde vi att arbeta vidare på separata håll. En av oss lyckades med att sätta upp programmet så att det kunde 
+skriva ut poängsumman utan att den multiplicerades på grund av reglerna. För att skapa en lämplig konstruktor behövde den kunna ta in alla attribut 
+för instansen ("car", "zipCode", "licenceLifeTime", "sex", "age"), värdet på alla dessa tilldelades i instansvariabler. Metoden evaluate_policy 
+behövde såklart tolka koden i policy.rb med instance_eval och fånga upp poängen på attributet. För att summera alla poängen, hade en extra 
+instansvariabel (@points) lagts till i konstruktorn med det ursprungliga värdet 0. För varje gång evaluatePolicy anropas, får då den summerade poängen 
+för instansen ett nytt värde. För att sedan fånga upp det rätta antalet poäng behövde metoderna fånga upp det andra attributet i metodanropet och addera 
+det till @points. När vi sedan testade tyckte vi att det såg bra ut först men efter att ha testat att anropa evaluate_policy flera gånger för samma 
+instans blev dess poängsumma bara högre. Vi insåg då att vi behövde nollställa @points vid varje anrop.
+
+När vi väl vart klara med att kunna läsa in data och räkna poängen började vi att skapa tester. Det gick snabbt att bygga tester när vi skulle räkna på 
+totalpoängen för olika personer. Vi fick lite problem med att få informationen som till exempel car. Vi hade problem med att förstå hur datan skulle tas in 
+men med hjälp av att printa ut args kunde vi förstå hur intagandet skulle se ut för att korrekt kunna kolla om de gav ut rätt poäng. Sedan ville vi försöka 
+testa om man fick ut erros från att ha fel inuti i DLS-filen men hittade ingen speciell unit test för det.
+
+När vi hade ett fungerande program insåg vi att metoderna hade väldigt repetetitiv kod. Utifrån det valde vi att skapa hjälpfunktioner som validateArgs för att 
+minska kodupprepning. Efter att hjälpfunktionera skapades behövde vi lägga till extra tester för de specifika hjälpfunktioner vilket tog lite tid att 
+komma på bra varianter av.
+
+2026-02-09
+Självständigt arbete (10:15-11:15, 11:45-13:15):
+Efter att vi gick igenom några mindre förbättringar av uppgift 1, som vi båda hade jobbat med under helgen, påbörjade vi arbetet med uppgift 2. Utefter vad 
+vi hade läst om i föreläsning 6 och sett i "diceRoller" så tror vi att uppgiften går ut på att skapa en lexer till parsern som redan ligger i new-rdparse.rb.
+
+Laboration (13:15-15:00):
+Vi har nu lyckats med att implementera en stor del av språket till parsern. Det som vi tror återstår nu är att även implementera regeln för "ASSIGN" och en 
+variabel (VAR). Just nu undrar vi främst över hur "set" ska användas. Efter att vi frågade assistenten om hjälp verkar det nu som att "set" inte nödvändigtvis 
+behöver användas i blocket. Detta förvirrade oss en del då operatorerna 'or', 'and' och 'not' kunde användas i deras respektive block utan problem.
+
+2026-02-10
+Självständigt arbete (10:00-13:30):
+Med en variant av programmet som nu i stort sett fungerar tyckte vi att det var dags att göra enhetstester. Att göra det visade sig dock vara svårt i och 
+med att så som programmet nu fungerar så kräver den input som en användare matar in via prompten. Detta löste vi genom att lägga till en väldigt liten 
+funktion (calcParse()) som returnerade olika resultat av programmet, beroende på vilken sträng som lades in. En funktion som enbart finns till för att 
+möjliggöra enhetstester brukar kallas för en "wrapper function".
+
+Vi valde att lägga till krav på variabelnamn som att de behöver starta med en liten bokstav, @, _ eller $ för att följa rubys syntaxregler. Det gjorde vi 
+genom att lägga till extra regler på vår regex som kollade specifikt på första bokstaven.
+
+För att göra programmet mer läsbart valde vi att placera klassen Calc i sin egen separata fil. Den behövde då såklart ärva från rdparse-filen för att få 
+tillgång till klassen Parser.
+
+Del 1:
+DSL:
+Vårt mål för DSl filen var att skriva raderna som:
+car "brand" points
+zipCode "numbers" points
+age from-to points
+
+Anledningen till varför vi har car brand och zipcode som strings är för att enklare jämföra och hålla koll på regler. Till exempel med zipCode blir det 
+enklare att jämföra början av strängen om det började med 58 med en string istället för en integer. Detta gjorde det enklare för oss att bedöma när vi ska 
+multiplicera poängen när vi räknar ut poängen.
+
+Vi fick en del problem när vi skulle läsa in datan. Problemet vi hade med poängen efter bilmärket var att vi fick ett syntax error with unexpected int, 
+vilket vi inte förstod oss på helt. Istället fick vi göra en lösning där vi skrev car "brand", points vilket gjorde det enklare att ta in dem som två 
+olika värden. Detta gjorde programmet mindre användarvänligt men på grund av att vi inte kom på hur man kunde göra utan det fick vi ta den lösningen. 
+Vi hade även problem med att läsa in datan från age med - tecken mellan på grund av att ett av värdena blev negativt och det första värdet inte togs med. 
+Med det behövde vi byta till det vi har nu med: from..to. Vilket vi tycker fortfarande är tydligt men kunde ha varit bättre med bindestreck mellan. 
+
+Del 2:
+Rättelser:
+Under självständigt arbete (2026-02-09) får vi det att låta som att allt i klassen Calc är en lexer. Det är inte sant. Lexern utgörs endast av 
+metoderna "token()" som försöker konvertera strömmar av källkod till strukturerade listor av tokens. Vi missförstod först vad lexern var för någonting.
