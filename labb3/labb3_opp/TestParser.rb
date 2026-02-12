@@ -1,4 +1,4 @@
-require './rdparse'
+require './parser'
 require 'test/unit'
 
 class TestCalc < Test::Unit::TestCase
