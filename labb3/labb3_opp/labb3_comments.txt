@@ -1,1 +1,35 @@
 Vi behövde fixa importen i TestParser.rb för att kunna köra den
+
+De löste problemet att definera/läsa från variabler på en bra sätt: returnera namnet på var
+och assigna till den i :assign och evaluera i :term
+
+------------------------------------------------------------------------------------------------
+Uppgif1:
+
+--------------------------------
+Markus: Hur koden funkar
+
+--------------------------------
+Vadym: Hur det är jämfört med vår
+
+--------------------------------
+Markus: Tekniker i kod
+
+--------------------------------
+Vadym: Kodningstil och tester
+
+
+------------------------------------------------------------------------------------------------
+Uppgif2:
+
+--------------------------------
+Markus: Hur koden funkar
+
+--------------------------------
+Vadym: Hur det är jämfört med vår
+
+--------------------------------
+Markus: Tekniker i kod
+
+--------------------------------
+Vadym: Kodningstil och tester
