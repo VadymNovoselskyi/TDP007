@@ -12,12 +12,28 @@ Markus: Hur koden funkar
 --------------------------------
 Vadym: Hur det är jämfört med vår
 
+Liknande struktur på policy.rb
+
+De: tableName value  points
+Vi: tableName_value points
+
+Vi använde start_end för ranges, de använde start..end - bättre för att kan omvandlas till Ruby's Range
+
+De definerade separat funktion för varje tabel som gör typ samma sak
+Vi generaliserade genom method_missing och instance_eval()
+
 --------------------------------
 Markus: Tekniker i kod
 
 --------------------------------
 Vadym: Kodningstil och tester
 
+Konsekvent användning av camelCase i koden, men blandat med snake_case i vissa tester (test_matchValues_range).
+Har flera kommentar, men de ofta är otydliga och förklarar inte hur/varför
+Bryter ner väldigt mycket i hjälpfunktioner. Onödigt för att mest av dem är 1-5 rader av kod och används endast en gång
+Inte de bästa funktionsnamn. T.ex validateArgs anroper uppdatePoints
+
+Tester testade alla hjälpfunktioner på ett bra sätt och även flera invalid cases
 
 ------------------------------------------------------------------------------------------------
 Uppgif2:
@@ -28,8 +44,33 @@ Markus: Hur koden funkar
 --------------------------------
 Vadym: Hur det är jämfört med vår
 
+De använde mer RegEx för att ha mer constraint på tokens, medan vi gjorde allt med en RegEx för att dra ut tokens
+/\w+\b|\(|\)/
+Det gjorde att man fick inline error om misslyckning av tokenizing,
+medan vi får en parsning error som crashar programmet
+
+De hade därför också andra regler för variabler. Vi have \w dvs a-z, A-Z, 0-9 och _
+Medan de hade a-z, _, @, $ i början och \w i resten
+
+De använde sig av en Hash för att spara variabler, vi använde oss av class/instance_eval för det
+Det var ungefär lika ändå
+
+Vi hade var_name för :assign och var_value för :term för att vi missade att man kan
+instance_eval i return för match(:var) som de gjorde (dock lite ful där de hanterar bools och vars i en match)
+
 --------------------------------
 Markus: Tekniker i kod
 
 --------------------------------
 Vadym: Kodningstil och tester
+
+Testerna var jätte bra och testade allt logic för and/or/not och deras mixing,
+testade variabler och deras naming-convention och även Parse::Error och KeyError för invalid syntax (assert_raise)
+
+Vi gjorde typ samma sak
+
+
+General (utvecklarblogg)
+De hade rätt så stor utvecklarblogg på 6.5k chars.
+
+Det var detaljerad med förklaring av problem som de löste och hur de löste det
