@@ -9,6 +9,27 @@ Uppgif1:
 --------------------------------
 Markus: Hur koden funkar
 
+person klass
+
+variabler för: car, zipCode, licenceLifeTime, sex, age, points
+
+inte method_missing
+en metod per värde
+
+policy.rb:
+
+--- SKRIV UPP ---
+car "BMV", 5
+age 18..20, 2.5
+
+gjorde så allt vart method calls med två args
+
+kollade om första arg va en range
+
+om match add points
+
+egen funktion för extra beräkningar
+
 --------------------------------
 Vadym: Hur det är jämfört med vår
 
@@ -24,6 +45,15 @@ Vi generaliserade genom method_missing och instance_eval()
 
 --------------------------------
 Markus: Tekniker i kod
+
+Många funktioner
+Inga intrassanta/konstiga lösningar
+
+String.start_with?
+
+Any.is_a?
+
+instance_eval
 
 --------------------------------
 Vadym: Kodningstil och tester
