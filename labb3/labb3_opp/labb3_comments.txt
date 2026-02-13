@@ -71,6 +71,23 @@ Uppgif2:
 --------------------------------
 Markus: Hur koden funkar
 
+Många tokens, många regex
+ex:
+separata för or, not, and, set, Varje nyckelord
+
+kan kombinera regex till en regex
+
+hash för "memory"
+
+en match :ASSIGN, med set & ()
+
+fyra match :EXPR, not, and, or
+
+en match :TERM, if sats i för att matcha "true" eller false" eller fetch från memory
+Borde delats up i olika regler
+
+em match :VAR, Regex som matchar bokstäver $, @ och _
+
 --------------------------------
 Vadym: Hur det är jämfört med vår
 
@@ -90,6 +107,18 @@ instance_eval i return för match(:var) som de gjorde (dock lite ful där de han
 
 --------------------------------
 Markus: Tekniker i kod
+
+Använde RD-Parse :)
+
+Lexer, Tokens
+
+Parser, Rules
+
+Regex och string match
+
+Intressant:
+Använde Readline.readline för innmatning
+Error hantering för inmatning
 
 --------------------------------
 Vadym: Kodningstil och tester
