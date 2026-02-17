@@ -1,124 +1,6 @@
 #!/usr/bin/env ruby
 
 # ----------------------------------------------------------------------------
-#  Unidirectional constraint network for logic gates
-# ----------------------------------------------------------------------------
-
-# This is a simple example of a constraint network that uses logic gates. 
-# There are three classes of gates: AndGate, OrGate, and NotGate. 
-# Connections between gates are modelled as the class Wire.
-
-require 'logger'
-
-class BinaryConstraint
-
-  def initialize(input1, input2, output)
-    @input1=input1
-    @input1.add_constraint(self)
-    @input2=input2
-    @input2.add_constraint(self)
-    @output=output
-    new_value()
-  end
-  
-end
-
-class AndGate < BinaryConstraint
-  
-  def new_value
-    sleep 0.2
-    @output.value=(@input1.value and @input2.value)
-  end
-  
-end
-
-class OrGate < BinaryConstraint
-    
-  def new_value
-    sleep 0.2
-    @output.value=(@input1.value or @input2.value)
-  end
-  
-end
-
-class NotGate
-  
-  def initialize(input, output)
-    @input=input
-    @input.add_constraint(self)
-    @output=output
-    new_value
-  end
-  
-  def new_value
-    sleep 0.2
-    @output.value=(not @input.value)
-  end
-  
-end
-
-class Wire
-  
-  attr_accessor :name
-  attr_reader :value
-
-  def initialize(name, value=false)
-    @name=name
-    @value=value
-    @constraints=[]
-    @logger=Logger.new(STDOUT)
-  end
-  
-  def log_level=(level)
-    @logger.level=level
-  end
-  
-  def add_constraint(gate)
-    @constraints << gate
-  end
-  
-  def value=(value)
-    puts "#{name} = #{value}"
-    @value=value
-    @constraints.each { |c| c.new_value }
-  end
-  
-end
-
-# When you use test_constraints, it will prompt you for input before
-# proceeding. That way you can analyze what happens in the code before
-# you go on. You only need to press 'Enter' to continue.
-
-def test_constraints
-  a=Wire.new('a')
-  b=Wire.new('b')
-  c=Wire.new('c')
-
-  # If you want to see when c changes value, set the log_level of c to
-  # Logger::DEBUG
-  c.log_level=Logger::DEBUG
-
-  puts "Testing the AND gate"
-  andGate=AndGate.new(a, b, c)
-  a.value=true
-  gets
-  b.value=true
-  gets
-  a.value=false
-  gets
-
-  a=Wire.new('a')
-  b=Wire.new('b')
-  c=Wire.new('c')
-  puts "Testing the OR gate"
-  orGate=OrGate.new(a, b, c)
-  a.value=false
-  gets  
-  b.value=false
-  gets
-end
-
-# ----------------------------------------------------------------------------
 #  Bidirectional constraint network for arithmetic constraints
 # ----------------------------------------------------------------------------
 
@@ -152,8 +34,9 @@ class ArithmeticConstraint
   attr_accessor :a,:b,:out
   attr_reader :logger,:op,:inverse_op
 
-  def initialize(a, b, out)
+  def initialize(a, b, out, log_level=Logger::DEBUG)
     @logger=Logger.new(STDOUT)
+    @logger.level = log_level
     @a,@b,@out=[a,b,out]
     [a,b,out].each { |x| x.add_constraint(self) }
   end
@@ -163,29 +46,29 @@ class ArithmeticConstraint
   end
   
   def new_value(connector)
-    puts "[ArithmeticConstraint:new_value] connector: #{connector}"
+    @logger.debug("[ArithmeticConstraint:new_value] connector: #{connector}")
     if [a,b].include?(connector) and a.has_value? and b.has_value? and (not out.has_value?) then 
       # Inputs changed, so update output to be the sum of the inputs
       # "send" means that we send a message, op in this case, to an
       # object.
-      puts "[ArithmeticConstraint:new_value] #{self} : inputs have value; output doesn't"
+      @logger.debug("[ArithmeticConstraint:new_value] #{self} : inputs have value; output doesn't")
       val=a.value.send(op, b.value)
-      puts "[ArithmeticConstraint:new_value] #{self} : #{out} updated"
+      @logger.debug("[ArithmeticConstraint:new_value] #{self} : #{out} updated")
       out.assign(val, self)
       
     elsif ![a,b].include?(connector) && !(a.has_value? && b.has_value?) && out.has_value? then 
       # Inputs changed, so update output to be the sum of the inputs
       # "send" means that we send a message, op in this case, to an
       # object.
-      puts "[ArithmeticConstraint:new_value] #{self} : an input doesn't have value; output does"
+      @logger.debug("[ArithmeticConstraint:new_value] #{self} : an input doesn't have value; output does")
 
       if a.has_value? then
         val=out.value.send(inverse_op, a.value)
-        puts "[ArithmeticConstraint:new_value] #{self} : #{b} updated"
+        @logger.debug("[ArithmeticConstraint:new_value] #{self} : #{b} updated")
         b.assign(val, self)
       else b.has_value?
         val=out.value.send(inverse_op, b.value)
-        puts "[ArithmeticConstraint:new_value] #{self} : #{a} updated"
+        @logger.debug("[ArithmeticConstraint:new_value] #{self} : #{a} updated")
         a.assign(val, self)
       end
     end
@@ -228,13 +111,14 @@ class Connector
 
   attr_accessor :name,:value
 
-  def initialize(name, value=false)
+  def initialize(name, log_level=Logger::DEBUG, value=false)
     self.name=name
     @has_value=(not value.eql?(false))
     @value=value
     @informant=false
     @constraints=[]
     @logger=Logger.new(STDOUT)
+    @logger.level = log_level
   end
 
   def add_constraint(c)
@@ -248,13 +132,13 @@ class Connector
       @has_value=false
       @value=false
       @informant=false
-      puts "[Connector:forget_value] #{self} lost value"
+      @logger.debug("[Connector:forget_value] #{self} lost value")
       others=(@constraints-[retractor])
-      puts "[Connector:forget_value] Notifying #{others}" unless others == []
+      @logger.debug("[Connector:forget_value] Notifying #{others}") unless others == []
       others.each { |c| c.lost_value(self) }
       "ok"
     else
-      puts "[Connector:forget_value] #{self} ignored request to forget from #{retractor}"
+      @logger.debug("[Connector:forget_value] #{self} ignored request to forget from #{retractor}")
     end
   end
 
@@ -270,7 +154,7 @@ class Connector
   
   def assign(v,setter)
       if not has_value? then
-        puts "[Connector:assign] #{name} got new value: #{v} from #{setter}"
+        @logger.debug("[Connector:assign] #{name} got new value: #{v} from #{setter}")
         @value=v
         @has_value=true
         @informant=setter
@@ -312,14 +196,16 @@ def test_adder
   Adder.new(a, b, c)
   a.user_assign(10)
   b.user_assign(5)
-  puts "c = "+c.value.to_s
+  @logger.debug("c = "+c.value.to_s)
   a.forget_value "user"
   c.user_assign(20)
   # a should now be 15
-  puts "a = "+a.value.to_s
+  @logger.debug("a = "+a.value.to_s)
 end
 
-test_adder()
+if __FILE__ == $0 then
+  test_adder()
+end
 
 # ----------------------------------------------------------------------------
 #  Assignment
