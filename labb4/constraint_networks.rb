@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'logger'
 
 # ----------------------------------------------------------------------------
 #  Bidirectional constraint network for arithmetic constraints
@@ -97,7 +98,6 @@ class Multiplier < ArithmeticConstraint
     super(*args)
     @op,@inverse_op=[:*,:/]
   end
-    
 end
 
 class ContradictionException < Exception
@@ -203,10 +203,6 @@ def test_adder
   @logger.debug("a = "+a.value.to_s)
 end
 
-if __FILE__ == $0 then
-  test_adder()
-end
-
 # ----------------------------------------------------------------------------
 #  Assignment
 # ----------------------------------------------------------------------------
@@ -223,8 +219,40 @@ end
 # tv� Connectors. Dessa tv� motsvarar Celsius respektive Fahrenheit och 
 # kan anv�ndas f�r att mata in temperatur i den ena eller andra skalan.
 
-def celsius2fahrenheit
-  # Klistra in er kod h�r.
+def celsius2fahrenheit(log_level=Logger::DEBUG)
+  value_5 = Connector.new("5", log_level)
+  value_5.user_assign(5)
+
+  value_9 = Connector.new("9", log_level)
+  value_9.user_assign(9)
+
+  value_minus32 = Connector.new("-32", log_level)
+  value_minus32.user_assign(-32)
+
+  celsius = Connector.new("celsius", log_level)
+  celsius_x9 = Connector.new("celsius*9", log_level)
+  Multiplier.new(celsius, value_9, celsius_x9, log_level)
+  
+  farenheit = Connector.new("farenheit", log_level)
+  farenheit_minus32 = Connector.new("farenheit-32", log_level)
+  Adder.new(farenheit, value_minus32, farenheit_minus32, log_level)
+  
+  Multiplier.new(farenheit_minus32, value_5, celsius_x9, log_level)
+  return [celsius, farenheit]
+end
+
+def test_celsius2fahrenheit(log_level=Logger::DEBUG)
+  c,f = celsius2fahrenheit(log_level)
+
+  # c.user_assign(100)
+  # puts f.value
+  
+  f.user_assign(212)
+  puts c.value
+end
+
+if __FILE__ == $0 then
+  test_celsius2fahrenheit()
 end
 
 # Ni kan d� anv�nda funktionen s� h�r:

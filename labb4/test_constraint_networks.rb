@@ -62,3 +62,24 @@ class TestConstraintNetworks < Test::Unit::TestCase
     assert_equal(15, @a.value)
   end
 end
+
+class TestTemp < Test::Unit::TestCase
+  def setup()
+    @c, @f = celsius2fahrenheit(Logger::INFO)
+  end
+
+  def test_celsius2fahrenheit()
+    @c.user_assign(100)
+    assert_equal(212, @f.value)
+
+    @c.user_assign(0)
+    assert_equal(32, @f.value)
+  end
+  def test_fahrenheit2celsius()
+    @f.user_assign(212)
+    assert_equal(100, @c.value)
+
+    @f.user_assign(100)
+    assert_equal(37, @c.value)
+  end
+end
