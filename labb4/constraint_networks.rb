@@ -78,7 +78,7 @@ class Wire
   end
   
   def value=(value)
-    @logger.debug("#{name} = #{value}")
+    puts "#{name} = #{value}"
     @value=value
     @constraints.each { |c| c.new_value }
   end
@@ -163,14 +163,31 @@ class ArithmeticConstraint
   end
   
   def new_value(connector)
-    if [a,b].include?(connector) and a.has_value? and b.has_value? and 
-        (not out.has_value?) then 
+    puts "[ArithmeticConstraint:new_value] connector: #{connector}"
+    if [a,b].include?(connector) and a.has_value? and b.has_value? and (not out.has_value?) then 
       # Inputs changed, so update output to be the sum of the inputs
       # "send" means that we send a message, op in this case, to an
       # object.
+      puts "[ArithmeticConstraint:new_value] #{self} : inputs have value; output doesn't"
       val=a.value.send(op, b.value)
-      logger.debug("#{self} : #{out} updated")
+      puts "[ArithmeticConstraint:new_value] #{self} : #{out} updated"
       out.assign(val, self)
+      
+    elsif ![a,b].include?(connector) && !(a.has_value? && b.has_value?) && out.has_value? then 
+      # Inputs changed, so update output to be the sum of the inputs
+      # "send" means that we send a message, op in this case, to an
+      # object.
+      puts "[ArithmeticConstraint:new_value] #{self} : an input doesn't have value; output does"
+
+      if a.has_value? then
+        val=out.value.send(inverse_op, a.value)
+        puts "[ArithmeticConstraint:new_value] #{self} : #{b} updated"
+        b.assign(val, self)
+      else b.has_value?
+        val=out.value.send(inverse_op, b.value)
+        puts "[ArithmeticConstraint:new_value] #{self} : #{a} updated"
+        a.assign(val, self)
+      end
     end
     self
   end
@@ -231,13 +248,13 @@ class Connector
       @has_value=false
       @value=false
       @informant=false
-      @logger.debug("#{self} lost value")
+      puts "[Connector:forget_value] #{self} lost value"
       others=(@constraints-[retractor])
-      @logger.debug("Notifying #{others}") unless others == []
+      puts "[Connector:forget_value] Notifying #{others}" unless others == []
       others.each { |c| c.lost_value(self) }
       "ok"
     else
-      @logger.debug("#{self} ignored request")
+      puts "[Connector:forget_value] #{self} ignored request to forget from #{retractor}"
     end
   end
 
@@ -253,7 +270,7 @@ class Connector
   
   def assign(v,setter)
       if not has_value? then
-        @logger.debug("#{name} got new value: #{v}")
+        puts "[Connector:assign] #{name} got new value: #{v} from #{setter}"
         @value=v
         @has_value=true
         @informant=setter
@@ -302,30 +319,32 @@ def test_adder
   puts "a = "+a.value.to_s
 end
 
+test_adder()
+
 # ----------------------------------------------------------------------------
 #  Assignment
 # ----------------------------------------------------------------------------
 
-# Uppgift 1 inför fjärde seminariet innebär två saker:
-# - Först ska ni skriva enhetstester för Adder och Multiplier. Det är inte
-#   helt säkert att de funkar som de ska. Om ni med era tester upptäcker
+# Uppgift 1 infï¿½r fjï¿½rde seminariet innebï¿½r tvï¿½ saker:
+# - Fï¿½rst ska ni skriva enhetstester fï¿½r Adder och Multiplier. Det ï¿½r inte
+#   helt sï¿½kert att de funkar som de ska. Om ni med era tester upptï¿½cker
 #   fel ska ni dessutom korrigera Adder och Multiplier.
-# - Med hjälp av Adder och Multiplier m.m. ska ni sedan bygga ett nätverk som
+# - Med hjï¿½lp av Adder och Multiplier m.m. ska ni sedan bygga ett nï¿½tverk som
 #   kan omvandla temperaturer mellan Celsius och Fahrenheit. (Om ni vill
-#   får ni ta en annan ekvation som är ungefär lika komplicerad.)
+#   fï¿½r ni ta en annan ekvation som ï¿½r ungefï¿½r lika komplicerad.)
 
-# Ett tips är att skapa en funktion celsius2fahrenheit som returnerar
-# två Connectors. Dessa två motsvarar Celsius respektive Fahrenheit och 
-# kan användas för att mata in temperatur i den ena eller andra skalan.
+# Ett tips ï¿½r att skapa en funktion celsius2fahrenheit som returnerar
+# tvï¿½ Connectors. Dessa tvï¿½ motsvarar Celsius respektive Fahrenheit och 
+# kan anvï¿½ndas fï¿½r att mata in temperatur i den ena eller andra skalan.
 
 def celsius2fahrenheit
-  # Klistra in er kod här.
+  # Klistra in er kod hï¿½r.
 end
 
-# Ni kan då använda funktionen så här:
+# Ni kan dï¿½ anvï¿½nda funktionen sï¿½ hï¿½r:
 
 # irb(main):1988:0> c,f=fahrenheit2celsius
-# <någonting returneras>
+# <nï¿½gonting returneras>
 # irb(main):1989:0> c.user_assign 100
 # D, [2007-02-08T09:15:01.971437 #521] DEBUG -- : c ignored request
 # D, [2007-02-08T09:15:02.057665 #521] DEBUG -- : c got new value: 100
