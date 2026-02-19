@@ -175,8 +175,8 @@ end
 
 class ConstantConnector < Connector
   
-  def initialize(name, value)
-    super(name, value)
+  def initialize(name, value, log_level = LEVEL::DEBUG)
+    super(name, log_level, value)
     if not has_value?
       @logger.warn "Constant #{name} has no value!"
     end
@@ -220,14 +220,9 @@ end
 # kan anv�ndas f�r att mata in temperatur i den ena eller andra skalan.
 
 def celsius2fahrenheit(log_level=Logger::DEBUG)
-  value_5 = Connector.new("5", log_level)
-  value_5.user_assign(5)
-
-  value_9 = Connector.new("9", log_level)
-  value_9.user_assign(9)
-
-  value_minus32 = Connector.new("-32", log_level)
-  value_minus32.user_assign(-32)
+  value_5 = ConstantConnector.new("5", 5, log_level)
+  value_9 = ConstantConnector.new("9", 9, log_level)
+  value_minus32 = ConstantConnector.new("-32", -32, log_level)
 
   celsius = Connector.new("celsius", log_level)
   celsius_x9 = Connector.new("celsius*9", log_level)
@@ -244,75 +239,13 @@ end
 def test_celsius2fahrenheit(log_level=Logger::DEBUG)
   c,f = celsius2fahrenheit(log_level)
 
-  # c.user_assign(100)
-  # puts f.value
+  c.user_assign(100)
+  puts f.value
   
-  f.user_assign(212)
-  puts c.value
+  # f.user_assign(212)
+  # puts c.value
 end
 
 if __FILE__ == $0 then
   test_celsius2fahrenheit()
 end
-
-# Ni kan d� anv�nda funktionen s� h�r:
-
-# irb(main):1988:0> c,f=fahrenheit2celsius
-# <n�gonting returneras>
-# irb(main):1989:0> c.user_assign 100
-# D, [2007-02-08T09:15:01.971437 #521] DEBUG -- : c ignored request
-# D, [2007-02-08T09:15:02.057665 #521] DEBUG -- : c got new value: 100
-# D, [2007-02-08T09:15:02.058046 #521] DEBUG -- : c * 9 == 9c : 9c updated
-# D, [2007-02-08T09:15:02.058209 #521] DEBUG -- : 9c got new value: 900
-# D, [2007-02-08T09:15:02.058981 #521] DEBUG -- : f-32 * 5 == 9c : f-32 updated
-# D, [2007-02-08T09:15:02.059156 #521] DEBUG -- : f-32 got new value: 180
-# D, [2007-02-08T09:15:02.059642 #521] DEBUG -- : f-32 + 32 == f : f updated
-# D, [2007-02-08T09:15:02.059792 #521] DEBUG -- : f got new value: 212
-# "ok"
-# irb(main):1990:0> f.value
-# 212
-# irb(main):1991:0> c.user_assign 0
-# D, [2007-02-08T09:15:19.433621 #521] DEBUG -- : c lost value
-# D, [2007-02-08T09:15:19.501880 #521] DEBUG -- : Notifying c * 9 == 9c
-# D, [2007-02-08T09:15:19.502214 #521] DEBUG -- : 9 ignored request
-# D, [2007-02-08T09:15:19.502380 #521] DEBUG -- : 9c lost value
-# D, [2007-02-08T09:15:19.502527 #521] DEBUG -- : Notifying f-32 * 5 == 9c
-# D, [2007-02-08T09:15:19.502701 #521] DEBUG -- : f-32 lost value
-# D, [2007-02-08T09:15:19.502863 #521] DEBUG -- : Notifying f-32 + 32 == f
-# D, [2007-02-08T09:15:19.503031 #521] DEBUG -- : 32 ignored request
-# D, [2007-02-08T09:15:19.503427 #521] DEBUG -- : f lost value
-# D, [2007-02-08T09:15:19.503570 #521] DEBUG -- : 5 ignored request
-# D, [2007-02-08T09:15:19.503699 #521] DEBUG -- : c got new value: 0
-# D, [2007-02-08T09:15:19.503860 #521] DEBUG -- : c * 9 == 9c : 9c updated
-# D, [2007-02-08T09:15:19.503963 #521] DEBUG -- : 9c got new value: 0
-# D, [2007-02-08T09:15:19.504111 #521] DEBUG -- : f-32 * 5 == 9c : f-32 updated
-# D, [2007-02-08T09:15:19.504210 #521] DEBUG -- : f-32 got new value: 0
-# D, [2007-02-08T09:15:19.504356 #521] DEBUG -- : f-32 + 32 == f : f updated
-# D, [2007-02-08T09:15:19.534416 #521] DEBUG -- : f got new value: 32
-# "ok"
-# irb(main):1992:0> f.value
-# 32
-# irb(main):1993:0> c.forget_value "user"
-# D, [2007-02-08T09:19:56.754866 #521] DEBUG -- : c lost value
-# D, [2007-02-08T09:19:56.842475 #521] DEBUG -- : Notifying c * 9 == 9c
-# D, [2007-02-08T09:19:56.844665 #521] DEBUG -- : 9 ignored request
-# D, [2007-02-08T09:19:56.844855 #521] DEBUG -- : 9c lost value
-# D, [2007-02-08T09:19:56.845021 #521] DEBUG -- : Notifying f-32 * 5 == 9c
-# D, [2007-02-08T09:19:56.845195 #521] DEBUG -- : f-32 lost value
-# D, [2007-02-08T09:19:56.845363 #521] DEBUG -- : Notifying f-32 + 32 == f
-# D, [2007-02-08T09:19:56.845539 #521] DEBUG -- : 32 ignored request
-# D, [2007-02-08T09:19:56.845664 #521] DEBUG -- : f lost value
-# D, [2007-02-08T09:19:56.845790 #521] DEBUG -- : 5 ignored request
-# "ok"
-# irb(main):1994:0> f.user_assign 100
-# D, [2007-02-08T09:20:14.367288 #521] DEBUG -- : f ignored request
-# D, [2007-02-08T09:20:14.465708 #521] DEBUG -- : f got new value: 100
-# D, [2007-02-08T09:20:14.466057 #521] DEBUG -- : f-32 + 32 == f : f-32 updated
-# D, [2007-02-08T09:20:14.466261 #521] DEBUG -- : f-32 got new value: 68
-# D, [2007-02-08T09:20:14.466436 #521] DEBUG -- : f-32 * 5 == 9c : 9c updated
-# D, [2007-02-08T09:20:14.466547 #521] DEBUG -- : 9c got new value: 340
-# D, [2007-02-08T09:20:14.466714 #521] DEBUG -- : c * 9 == 9c : c updated
-# D, [2007-02-08T09:20:14.468579 #521] DEBUG -- : c got new value: 37
-# "ok"
-# irb(main):1995:0> c.value
-# 37
