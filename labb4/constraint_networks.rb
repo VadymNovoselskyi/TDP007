@@ -48,7 +48,7 @@ class ArithmeticConstraint
   
   def new_value(connector)
     @logger.debug("[ArithmeticConstraint:new_value] connector: #{connector}")
-    if [a,b].include?(connector) and a.has_value? and b.has_value? and (not out.has_value?) then 
+    if a.has_value? and b.has_value? and (not out.has_value?) then 
       # Inputs changed, so update output to be the sum of the inputs
       # "send" means that we send a message, op in this case, to an
       # object.
@@ -57,7 +57,7 @@ class ArithmeticConstraint
       @logger.debug("[ArithmeticConstraint:new_value] #{self} : #{out} updated")
       out.assign(val, self)
       
-    elsif ![a,b].include?(connector) && !(a.has_value? && b.has_value?) && out.has_value? then 
+    elsif !(a.has_value? && b.has_value?) && out.has_value? then 
       # Inputs changed, so update output to be the sum of the inputs
       # "send" means that we send a message, op in this case, to an
       # object.

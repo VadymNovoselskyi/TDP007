@@ -433,6 +433,8 @@ class ConstraintParser < Parser
   class Variable; end
 
   def initialize
+    @zero_conn = ConstantConnector.new(0, 0)
+
     @connectors={}
     @parser=super("constraints") do
       token(/\s+/)
@@ -518,17 +520,22 @@ class ConstraintParser < Parser
 
   # Unify the connectors on the left and right hand side of an equality
   def replace_conn(lh,rh)
-    lh_conn,rh_conn=[get_connector(lh),get_connector(rh)]
-    conn,exp=[nil,nil]
-    if rh.is_a?(ArithmeticConstraint) then
-      exp,conn=rh,lh_conn
-      @connectors.delete(rh_conn.name)
-    elsif lh.is_a?(ArithmeticConstraint) then
-           exp,conn=lh,rh_conn
-           @connectors.delete(lh_conn.name)
-    end
-    exp.out=conn
-    conn.add_constraint(exp)
+    # puts lh, lh.class, rh, rh.class
+    eq_constraint = Adder.new(lh, @zero_conn, rh)
+    # puts eq_constraint
+    eq_constraint.new_value(@zero_conn)
+
+
+    # exp, conn=[nil,nil]
+    # if rh.is_a?(ArithmeticConstraint) then
+    #   exp,conn=rh,lh
+    #   @connectors.delete(rh.name)
+    # elsif lh.is_a?(ArithmeticConstraint) then
+    #        exp,conn=lh,rh
+    #        @connectors.delete(lh.name)
+    # end
+    # exp.out=conn
+    # conn.add_constraint(exp)
   end
   
   def parse(str)
@@ -541,7 +548,9 @@ end
 
 if __FILE__ == $0 then
   cp = ConstraintParser.new
-  c,f = cp.parse "9*c=5*(f-32)"
+  # c,f = cp.parse "9*c=5*(f-32)"
+  c = cp.parse "c=32+5"
+  puts c[0].value
 end
 
 # Test:
