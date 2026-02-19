@@ -175,7 +175,7 @@ end
 
 class ConstantConnector < Connector
   
-  def initialize(name, value, log_level = LEVEL::DEBUG)
+  def initialize(name, value, log_level = Logger::DEBUG)
     super(name, value, log_level)
     if not has_value?
       @logger.warn "Constant #{name} has no value!"
