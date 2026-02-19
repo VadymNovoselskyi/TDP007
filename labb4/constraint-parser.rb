@@ -592,7 +592,7 @@ class ConstraintParser < Parser
     
       rule :atom do
         match(Connector)
-        match('(', :expr, ')') {|_, a, _| a }
+        match('(', :expr, ')'end) {|_, a, _| a }
       end
     end
   end
@@ -612,10 +612,9 @@ class ConstraintParser < Parser
     if rh.is_a?(ArithmeticConstraint) then
       exp,conn=rh,lh_conn
       @connectors.delete(rh_conn.name)
-    else if lh.is_a?(ArithmeticConstraint) then
+    elsif lh.is_a?(ArithmeticConstraint) then
            exp,conn=lh,rh_conn
            @connectors.delete(lh_conn.name)
-         end
     end
     exp.out=conn
     conn.add_constraint(exp)
@@ -628,6 +627,11 @@ class ConstraintParser < Parser
 
 end
 
+
+if __FILE__ == $0 then
+  cp = ConstraintParser.new
+  c,f = cp.parse "9*c=5*(f-32)"
+end
 
 # Test:
 
