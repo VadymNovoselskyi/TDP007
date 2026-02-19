@@ -4,11 +4,11 @@ require 'test/unit'
 
 class TestConstraintNetworks < Test::Unit::TestCase
   def setup()
-    @a = Connector.new("a", Logger::INFO)
-    @b = Connector.new("b", Logger::INFO)
-    @c = Connector.new("c", Logger::INFO)  
-    @d = Connector.new("d", Logger::INFO)  
-    @e = Connector.new("e", Logger::INFO)  
+    @a = Connector.new("a", false, Logger::INFO)
+    @b = Connector.new("b", false, Logger::INFO)
+    @c = Connector.new("c", false, Logger::INFO)  
+    @d = Connector.new("d", false, Logger::INFO)  
+    @e = Connector.new("e", false, Logger::INFO)  
   end
   def test_adder()
     Adder.new(@a, @b, @c, Logger::INFO)

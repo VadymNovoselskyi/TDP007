@@ -111,7 +111,7 @@ class Connector
 
   attr_accessor :name,:value
 
-  def initialize(name, log_level=Logger::DEBUG, value=false)
+  def initialize(name, value=false, log_level=Logger::DEBUG)
     self.name=name
     @has_value=(not value.eql?(false))
     @value=value
@@ -176,7 +176,7 @@ end
 class ConstantConnector < Connector
   
   def initialize(name, value, log_level = LEVEL::DEBUG)
-    super(name, log_level, value)
+    super(name, value, log_level)
     if not has_value?
       @logger.warn "Constant #{name} has no value!"
     end
@@ -224,12 +224,12 @@ def celsius2fahrenheit(log_level=Logger::DEBUG)
   value_9 = ConstantConnector.new("9", 9, log_level)
   value_minus32 = ConstantConnector.new("-32", -32, log_level)
 
-  celsius = Connector.new("celsius", log_level)
-  celsius_x9 = Connector.new("celsius*9", log_level)
+  celsius = Connector.new("celsius", false, log_level)
+  celsius_x9 = Connector.new("celsius*9", false, log_level)
   Multiplier.new(celsius, value_9, celsius_x9, log_level)
   
-  farenheit = Connector.new("farenheit", log_level)
-  farenheit_minus32 = Connector.new("farenheit-32", log_level)
+  farenheit = Connector.new("farenheit", false, log_level)
+  farenheit_minus32 = Connector.new("farenheit-32", false, log_level)
   Adder.new(farenheit, value_minus32, farenheit_minus32, log_level)
   
   Multiplier.new(farenheit_minus32, value_5, celsius_x9, log_level)
