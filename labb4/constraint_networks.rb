@@ -85,18 +85,29 @@ class ArithmeticConstraint
 end
 
 class Adder < ArithmeticConstraint
-  
   def initialize(*args)
     super(*args)
     @op,@inverse_op=[:+,:-]
   end
 end
+class Subtracter < ArithmeticConstraint
+  def initialize(*args)
+    super(*args)
+    @op,@inverse_op=[:-,:+]
+  end
+end
 
 class Multiplier < ArithmeticConstraint
-
   def initialize(*args)
     super(*args)
     @op,@inverse_op=[:*,:/]
+  end
+end
+class Divider < ArithmeticConstraint
+
+  def initialize(*args)
+    super(*args)
+    @op,@inverse_op=[:/,:*]
   end
 end
 
