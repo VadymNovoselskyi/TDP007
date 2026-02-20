@@ -466,13 +466,13 @@ class ConstraintParser < Parser
       end
 
       rule :expr do
-        match(:expr, '+', :expr) do |a, _, b| 
+        match(:expr, '+', :term) do |a, _, b| 
           conn_a,conn_b,conn_c=get_connectors(a,'+',b)
           expr = Adder.new(conn_a,conn_b,conn_c)
           expr.new_value(conn_c)
         end
 
-        match(:expr, '-', :expr) do |a, _, b|
+        match(:expr, '-', :term) do |a, _, b|
           conn_a,conn_b,conn_c=get_connectors(a,'-',b)
           expr = Subtracter.new(conn_a, conn_b, conn_c)
           expr.new_value(conn_c)
@@ -482,13 +482,13 @@ class ConstraintParser < Parser
       end
       
       rule :term do
-        match(:term, '*', :term) do |a, _, b|
+        match(:term, '*', :atom) do |a, _, b|
           conn_a,conn_b,conn_c=get_connectors(a,'*',b)
           expr = Multiplier.new(conn_a,conn_b,conn_c)
           expr.new_value(conn_c)
         end
         
-        match(:term, '/', :term) do |a, _, b|
+        match(:term, '/', :atom) do |a, _, b|
           conn_a,conn_b,conn_c=get_connectors(a,'/',b)
           expr = Divider.new(conn_a, conn_b,conn_c)
           expr.new_value(conn_c)
