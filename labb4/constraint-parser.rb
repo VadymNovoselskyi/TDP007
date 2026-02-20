@@ -433,9 +433,6 @@ class ConstraintParser < Parser
   class Variable; end
 
   def initialize
-    @zero_conn = ConstantConnector.new("0", 0)
-    @min_one_conn = ConstantConnector.new("-1", -1)
-
     @connectors={}
     @parser=super("constraints") do
       token(/\s+/)
@@ -473,14 +470,12 @@ class ConstraintParser < Parser
           conn_a,conn_b,conn_c=get_connectors(a,'+',b)
           expr = Adder.new(conn_a,conn_b,conn_c)
           expr.new_value(conn_c)
-          expr
         end
 
         match(:expr, '-', :expr) do |a, _, b|
           conn_a,conn_b,conn_c=get_connectors(a,'-',b)
           expr = Subtracter.new(conn_a, conn_b, conn_c)
           expr.new_value(conn_c)
-          expr
         end
 
         match(:term)
@@ -491,14 +486,12 @@ class ConstraintParser < Parser
           conn_a,conn_b,conn_c=get_connectors(a,'*',b)
           expr = Multiplier.new(conn_a,conn_b,conn_c)
           expr.new_value(conn_c)
-          expr
         end
         
         match(:term, '/', :term) do |a, _, b|
           conn_a,conn_b,conn_c=get_connectors(a,'/',b)
           expr = Divider.new(conn_a, conn_b,conn_c)
           expr.new_value(conn_c)
-          expr
         end
         
         match(:atom)
@@ -529,23 +522,16 @@ class ConstraintParser < Parser
 
   # Unify the connectors on the left and right hand side of an equality
   def replace_conn(lh,rh)
-    # puts @connectors.values, '\n'
-    # 
     expr, conn=[nil,nil]
     if rh.is_a?(ArithmeticConstraint) then
       expr,conn=rh,lh
     elsif lh.is_a?(ArithmeticConstraint) then
       expr,conn=lh,rh
-    else 
-      eq_constraint = Adder.new(lh, @zero_conn, rh)
-      eq_constraint.new_value(@zero_conn)
-      return
     end
 
     # puts "[replace_conn] expr before changes: #{expr}"
     # puts "[replace_conn] conn before changes: #{get_value(conn)}"
     
-    @connectors.delete(expr.out.name)
     expr.out=get_value(conn)
     get_value(conn).add_constraint(expr)
     expr.new_value(get_value(conn))
