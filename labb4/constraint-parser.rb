@@ -527,6 +527,11 @@ class ConstraintParser < Parser
       expr,conn=rh,lh
     elsif lh.is_a?(ArithmeticConstraint) then
       expr,conn=lh,rh
+    else 
+      zero_conn = Connector.new('0', 0)
+      eq_constraint = Adder.new(lh, zero_conn, rh)
+      eq_constraint.new_value(zero_conn)
+      return
     end
 
     # puts "[replace_conn] expr before changes: #{expr}"
