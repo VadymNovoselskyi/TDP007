@@ -72,7 +72,7 @@ class ArithmeticConstraint
         val=out.value.send(inverse_op, a.value)
         $logger.debug("[ArithmeticConstraint:new_value] #{self} : #{b} updated")
         b.assign(val, self)
-      else b.has_value?
+      elsif b.has_value?
         val=out.value.send(inverse_op, b.value)
         $logger.debug("[ArithmeticConstraint:new_value] #{self} : #{a} updated")
         a.assign(val, self)

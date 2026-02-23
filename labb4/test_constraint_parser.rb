@@ -98,5 +98,12 @@ class TestConstraintParser < Test::Unit::TestCase
     assert_equal(55, a.value)
     assert_equal(10, b.value)
     assert_equal(15, c.value)
+
+    a, b, c = @parser.parse("a + b + c = 50")
+    b.user_assign(10)
+    c.user_assign(15)
+    assert_equal(25, a.value)
+    assert_equal(10, b.value)
+    assert_equal(15, c.value)
   end
 end
