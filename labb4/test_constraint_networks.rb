@@ -1,17 +1,17 @@
 require './constraint_networks'
 require 'logger'
 require 'test/unit'
-
+change_log_level(Logger::INFO)
 class TestConstraintNetworks < Test::Unit::TestCase
   def setup()
-    @a = Connector.new("a", false, Logger::INFO)
-    @b = Connector.new("b", false, Logger::INFO)
-    @c = Connector.new("c", false, Logger::INFO)  
-    @d = Connector.new("d", false, Logger::INFO)  
-    @e = Connector.new("e", false, Logger::INFO)  
+    @a = Connector.new("a", false)
+    @b = Connector.new("b", false)
+    @c = Connector.new("c", false)  
+    @d = Connector.new("d", false)  
+    @e = Connector.new("e", false)  
   end
   def test_adder()
-    Adder.new(@a, @b, @c, Logger::INFO)
+    Adder.new(@a, @b, @c)
     @a.user_assign(10)
     @b.user_assign(5)
     
@@ -27,7 +27,7 @@ class TestConstraintNetworks < Test::Unit::TestCase
   end
   
   def test_multiplier()
-    Multiplier.new(@a, @b, @c, Logger::INFO)
+    Multiplier.new(@a, @b, @c)
     @a.user_assign(10)
     @b.user_assign(5)
 
@@ -43,8 +43,8 @@ class TestConstraintNetworks < Test::Unit::TestCase
   end
 
   def test_both()
-    Adder.new(@a, @b, @c, Logger::INFO)
-    Multiplier.new(@c, @d, @e, Logger::INFO)
+    Adder.new(@a, @b, @c)
+    Multiplier.new(@c, @d, @e)
     @a.user_assign(10)
     @b.user_assign(5)
     @d.user_assign(10)
@@ -65,7 +65,7 @@ end
 
 class TestTemp < Test::Unit::TestCase
   def setup()
-    @c, @f = celsius2fahrenheit(Logger::INFO)
+    @c, @f = celsius2fahrenheit()
   end
 
   def test_celsius2fahrenheit()

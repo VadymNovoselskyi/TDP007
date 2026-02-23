@@ -26,6 +26,13 @@ module PrettyPrint
 
 end
 
+$logger=Logger.new(STDOUT)
+$logger.level = Logger::DEBUG
+
+def change_log_level(log_level) 
+  $logger.level = log_level
+end
+
 # This is the base class for Adder and Multiplier.
 
 class ArithmeticConstraint
@@ -33,11 +40,9 @@ class ArithmeticConstraint
   include PrettyPrint
 
   attr_accessor :a,:b,:out
-  attr_reader :logger,:op,:inverse_op
+  attr_reader :op,:inverse_op
 
-  def initialize(a, b, out, log_level=Logger::DEBUG)
-    @logger=Logger.new(STDOUT)
-    @logger.level = log_level
+  def initialize(a, b, out)
     @a,@b,@out=[a,b,out]
     [a,b,out].each { |x| x.add_constraint(self) }
   end
@@ -47,29 +52,29 @@ class ArithmeticConstraint
   end
   
   def new_value(connector)
-    @logger.debug("[ArithmeticConstraint:new_value] connector: #{connector}")
+    $logger.debug("[ArithmeticConstraint:new_value] connector: #{connector}")
     if a.has_value? and b.has_value? and (not out.has_value?) then 
       # Inputs changed, so update output to be the sum of the inputs
       # "send" means that we send a message, op in this case, to an
       # object.
-      @logger.debug("[ArithmeticConstraint:new_value] #{self} : inputs have value; output doesn't")
+      $logger.debug("[ArithmeticConstraint:new_value] #{self} : inputs have value; output doesn't")
       val=a.value.send(op, b.value)
-      @logger.debug("[ArithmeticConstraint:new_value] #{self} : #{out} updated")
+      $logger.debug("[ArithmeticConstraint:new_value] #{self} : #{out} updated")
       out.assign(val, self)
       
     elsif !(a.has_value? && b.has_value?) && out.has_value? then 
       # Inputs changed, so update output to be the sum of the inputs
       # "send" means that we send a message, op in this case, to an
       # object.
-      @logger.debug("[ArithmeticConstraint:new_value] #{self} : an input doesn't have value; output does")
+      $logger.debug("[ArithmeticConstraint:new_value] #{self} : an input doesn't have value; output does")
 
       if a.has_value? then
         val=out.value.send(inverse_op, a.value)
-        @logger.debug("[ArithmeticConstraint:new_value] #{self} : #{b} updated")
+        $logger.debug("[ArithmeticConstraint:new_value] #{self} : #{b} updated")
         b.assign(val, self)
       else b.has_value?
         val=out.value.send(inverse_op, b.value)
-        @logger.debug("[ArithmeticConstraint:new_value] #{self} : #{a} updated")
+        $logger.debug("[ArithmeticConstraint:new_value] #{self} : #{a} updated")
         a.assign(val, self)
       end
     end
@@ -122,14 +127,12 @@ class Connector
 
   attr_accessor :name,:value
 
-  def initialize(name, value=false, log_level=Logger::DEBUG)
+  def initialize(name, value=false)
     self.name=name
     @has_value=(not value.eql?(false))
     @value=value
     @informant=false
     @constraints=[]
-    @logger=Logger.new(STDOUT)
-    @logger.level = log_level
   end
 
   def add_constraint(c)
@@ -143,13 +146,13 @@ class Connector
       @has_value=false
       @value=false
       @informant=false
-      @logger.debug("[Connector:forget_value] #{self} lost value")
+      $logger.debug("[Connector:forget_value] #{self} lost value")
       others=(@constraints-[retractor])
-      @logger.debug("[Connector:forget_value] Notifying #{others}") unless others == []
+      $logger.debug("[Connector:forget_value] Notifying #{others}") unless others == []
       others.each { |c| c.lost_value(self) }
       "ok"
     else
-      @logger.debug("[Connector:forget_value] #{self} ignored request to forget from #{retractor}")
+      $logger.debug("[Connector:forget_value] #{self} ignored request to forget from #{retractor}")
     end
   end
 
@@ -165,7 +168,7 @@ class Connector
   
   def assign(v,setter)
       if not has_value? then
-        @logger.debug("[Connector:assign] #{name} got new value: #{v} from #{setter}")
+        $logger.debug("[Connector:assign] #{name} got new value: #{v} from #{setter}")
         @value=v
         @has_value=true
         @informant=setter
@@ -174,8 +177,8 @@ class Connector
       else
         if value != v then
           raise ContradictionException.new("#{name} already has value #{value}.\nCannot assign #{name} to #{v}")
+        end
       end
-    end
   end
   
   def to_s
@@ -186,10 +189,10 @@ end
 
 class ConstantConnector < Connector
   
-  def initialize(name, value, log_level = Logger::DEBUG)
-    super(name, value, log_level)
+  def initialize(name, value)
+    super(name, value)
     if not has_value?
-      @logger.warn "Constant #{name} has no value!"
+      $logger.warn "Constant #{name} has no value!"
     end
   end
   
@@ -207,11 +210,11 @@ def test_adder
   Adder.new(a, b, c)
   a.user_assign(10)
   b.user_assign(5)
-  @logger.debug("c = "+c.value.to_s)
+  $logger.debug("c = "+c.value.to_s)
   a.forget_value "user"
   c.user_assign(20)
   # a should now be 15
-  @logger.debug("a = "+a.value.to_s)
+  $logger.debug("a = "+a.value.to_s)
 end
 
 # ----------------------------------------------------------------------------
@@ -230,25 +233,25 @@ end
 # tv� Connectors. Dessa tv� motsvarar Celsius respektive Fahrenheit och 
 # kan anv�ndas f�r att mata in temperatur i den ena eller andra skalan.
 
-def celsius2fahrenheit(log_level=Logger::DEBUG)
-  value_5 = ConstantConnector.new("5", 5, log_level)
-  value_9 = ConstantConnector.new("9", 9, log_level)
-  value_minus32 = ConstantConnector.new("-32", -32, log_level)
+def celsius2fahrenheit()
+  value_5 = ConstantConnector.new("5", 5)
+  value_9 = ConstantConnector.new("9", 9)
+  value_minus32 = ConstantConnector.new("-32", -32)
 
-  celsius = Connector.new("celsius", false, log_level)
-  celsius_x9 = Connector.new("celsius*9", false, log_level)
-  Multiplier.new(celsius, value_9, celsius_x9, log_level)
+  celsius = Connector.new("celsius", false)
+  celsius_x9 = Connector.new("celsius*9", false)
+  Multiplier.new(celsius, value_9, celsius_x9)
   
-  farenheit = Connector.new("farenheit", false, log_level)
-  farenheit_minus32 = Connector.new("farenheit-32", false, log_level)
-  Adder.new(farenheit, value_minus32, farenheit_minus32, log_level)
+  farenheit = Connector.new("farenheit", false)
+  farenheit_minus32 = Connector.new("farenheit-32", false)
+  Adder.new(farenheit, value_minus32, farenheit_minus32)
   
-  Multiplier.new(farenheit_minus32, value_5, celsius_x9, log_level)
+  Multiplier.new(farenheit_minus32, value_5, celsius_x9)
   return [celsius, farenheit]
 end
 
-def test_celsius2fahrenheit(log_level=Logger::DEBUG)
-  c,f = celsius2fahrenheit(log_level)
+def test_celsius2fahrenheit()
+  c,f = celsius2fahrenheit()
 
   c.user_assign(100)
   puts f.value
