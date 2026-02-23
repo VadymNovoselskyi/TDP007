@@ -1,0 +1,40 @@
+Uppgift 1 - Tisdag den 17:e februari
+Det tog oss ett helt labbpass (cirka 2 timmar) att lösa denna uppgift. Under den första timmen fokuserade vi främst på att sätta oss in i den befintliga koden. 
+Vi läste igenom funktionerna noggrant, försökte förstå strukturen och hur de olika delarna påverkade varandra. 
+För att få en bättre förståelse gjorde vi flera mindre ändringar i koden och körde programmet upprepade gånger för att analysera hur outputen påverkades. 
+Detta hjälpte oss att stegvis bygga upp en tydligare bild av programmets flöde och logik.
+
+När vi båda kände oss bekväma med hur koden fungerade och hade en gemensam förståelse för dess uppbyggnad började vi diskutera själva problemet. 
+Det vi upptäckte var att funktionen new_value inte verkade fungera som förväntat i alla situationer. 
+I vissa fall uppdaterades värden korrekt, men i andra fall tappades information bort eller propagationen skedde inte som den skulle.
+
+Vi diskuterade olika möjliga orsaker till problemet och testade flera alternativa lösningar. 
+Till slut identifierade vi att funktionen saknade hantering för ett specifikt specialfall, nämligen när ett värde blev borttaget eller inte längre var giltigt för några andra parametrar ändrats. 
+För att lösa detta lade vi till ytterligare en if-sats i slutet av new_value-funktionen. 
+Denna if-sats kontrollerade om något värde hade tappats och hanterade detta genom att återställa eller uppdatera relevanta delar av nätverket. 
+
+Efter denna ändring fungerade programmet som förväntat och vi kunde verifiera lösningen genom flera testkörningar.
+
+Uppgift 2 - Torsdag den 19:e februari
+Denna uppgift löste vi under en håltimme innan lunch, vilket tog ungefär 1,5 timme. 
+Precis som tidigare började vi med att analysera den befintliga koden för att förstå vad som hände och varför programmet inte fungerade korrekt. 
+Vi gick igenom flödet steg för steg och försökte identifiera var felet uppstod.
+
+Ganska snabbt såg vi att problemet var kopplat till funktionen replace_conn. 
+Vi identifierade två olika möjliga lösningar, där båda innebar att skriva om delar av denna funktion.
+
+Den första lösningen gick ut på att hantera det fall där ingen av sidorna i kopplingen var ett Constraint Network. 
+Även om detta scenario inte inträffade särskilt ofta, insåg vi att det teoretiskt sett kunde orsaka buggar i systemet. 
+Vi diskuterade hur en sådan lösning skulle kunna implementeras, men bedömde att den skulle göra koden mer komplex än nödvändigt. 
+Därför valde vi att inte gå vidare med denna strategi.
+
+Den andra lösningen, som vi slutligen valde att implementera, innebar en omskrivning av replace_conn samt vissa andra delar av koden. 
+Målet var att säkerställa att replace_conn aldrig skulle ta emot argument där ingen av parterna var en ArithmeticConstraint. 
+Genom att tydligare definiera vilka typer som funktionen fick hantera kunde vi minska risken för fel och göra logiken mer förutsägbar.
+
+Som en del av denna lösning skapade vi två nya ArithmeticConstraint-klasser: en Subtracter och en Divider. 
+Genom att bryta ut dessa operationer i egna klasser blev strukturen mer konsekvent och lättare att förstå. 
+Efter refaktoreringen fungerade systemet stabilare och koden blev mer lättläst.
+
+Måndag den 23:e Februari
+Vi satt i en timme och skrev tester samt danna utvecklarblogg.
