@@ -1,10 +1,17 @@
 ﻿Uppgift 1
 
 
-Vi la till en början mycket tid på att försöka förstå koden och vad programmet gör, vilket var svårt. Genom att köra test-filerna fick vi bättre uppfattning. I den första delen av uppgiften, att få Adder och Multipler att fungera korrekt, utvecklade vi if-satsen i funktionen new_value() med ytterligare två elsif i klassen ArithmeticConstraint. Den första kontrollerar om ‘a’ har tappat sitt värde, men ‘b’ och ‘out’ har kvar sina. Den andra gör samma sak fast om ‘b’ tappat sitt värde. Inuti gör vi basically samma sak som i if-delen, förutom att vi använder inverse-op då vi vill ta exempelvis ‘out - a = b’.
+Vi la till en början mycket tid på att försöka förstå koden och vad programmet gör, vilket var svårt.
+Genom att köra test-filerna fick vi bättre uppfattning. 
+I den första delen av uppgiften, att få Adder och Multipler att fungera korrekt, utvecklade vi if-satsen i funktionen new_value() med ytterligare två elsif i klassen ArithmeticConstraint. 
+Den första kontrollerar om ‘a’ har tappat sitt värde, men ‘b’ och ‘out’ har kvar sina. 
+Den andra gör samma sak fast om ‘b’ tappat sitt värde. 
+Inuti gör vi basically samma sak som i if-delen, förutom att vi använder inverse-op då vi vill ta exempelvis ‘out - a = b’.
 
 
-Ett problem vi stötte på var att när ‘b’ tappade sitt värde, tappade även ‘a’ sitt. Efter mycket felsökande kom vi fram till att ordningen på funktionerna forget_value() och user_assign() spelar roll. I vår testkod hade vi till en början:
+Ett problem vi stötte på var att när ‘b’ tappade sitt värde, tappade även ‘a’ sitt. 
+Efter mycket felsökande kom vi fram till att ordningen på funktionerna forget_value() och user_assign() spelar roll. 
+I vår testkod hade vi till en början:
 
 
     a.user_assign(a.value) 
@@ -36,9 +43,13 @@ I den andra delen av uppgift 1 skapade vi en ny constraint-klass DegreesConstrai
     end
 
 
-Vi fick det att fungera men det följde inte exempelutskriften längst ner i filen. Vi insåg att vi behöver ha 9c och f-32 också samt att vi skulle använda oss av Adder och Multiplier. Vi insåg även att vi inte behövde en till constraint klass utan kunde skapa alla Connectors direkt i funktionen celsius2fahrenheit(). 
+Vi fick det att fungera men det följde inte exempelutskriften längst ner i filen. 
+Vi insåg att vi behöver ha 9c och f-32 också samt att vi skulle använda oss av Adder och Multiplier. 
+Vi insåg även att vi inte behövde en till constraint klass utan kunde skapa alla Connectors direkt i funktionen celsius2fahrenheit(). 
 
-Ett problem vi stötte på var att när vi gav 9, 5 och 32 ett värde genom user_assign() fick vi inte korrekt output. Vi insåg att vi istället kunde skicka med ett värde direkt när vi skapade Connectors av dessa, vilket löste problemet.
+
+Ett problem vi stötte på var att när vi gav 9, 5 och 32 ett värde genom user_assign() fick vi inte korrekt output. 
+Vi insåg att vi istället kunde skicka med ett värde direkt när vi skapade Connectors av dessa, vilket löste problemet.
 
 
 Uppgift 2
@@ -47,15 +58,30 @@ Uppgift 2
 Denna uppgift tog väldigt mycket tid och bidrog till ett flertal problem. 
 
 
-Vår lösning började med att vi listade ut att en implementation av get_connector() inte fanns. Vår första lösning att enbart returnera värdet direkt gjorde att det fungerade för 9*c = 5*f, 9*c=(f-32) och 9*c=f-32. 
 
-Problemet vi därefter stötte på och behövde lösa var att get_connectors() krävde att samtliga var connectors för att .name ska fungera. Vi fick felet att conn_b.name inte är en giltig metod. Den var till en början av klassen Adder, vilket gjorde att vi behövde omvandla den till en connector, vilket vi utnyttjade funktionen get_connector() till. Om det vi skickar till funktionen är en ArithmeticConstraint tar vi .out värdet (eftersom vi vill åt resultatet av uträkningen). Om det vi skickar upp inte är det returneras värdet direkt. Med hjälp av detta får vi ut a och b connectors. 
-
-
-Och det fungerar i stora drag men vi får fel output. När vi ska få f-32 får vi endast f vilket gör att vi får fel värden. Vi får alltså: #<Connector: f> men vi vill ha #<Connector: f-32>. Här insåg vi däremot att vi i get_connector() inte vill åt out, utan b (32 + f-32 == f). 
+Vår lösning började med att vi listade ut att en implementation av get_connector() inte fanns. 
+Vår första lösning att enbart returnera värdet direkt gjorde att det fungerade för 9*c = 5*f, 9*c=(f-32) och 9*c=f-32. 
 
 
-Dock ledde detta till nya fel där våra connectors hamnar i fel ordning och påverkar varandra i skumma ordningar. Istället för att dela 9c med 9, multiplicerar vi c (som borde vara 9*c) med 9 och får ett felvärde. I jämförelse med den givna förväntade loggen får vi detta: 
+Problemet vi därefter stötte på och behövde lösa var att get_connectors() krävde att samtliga var connectors för att .name ska fungera. 
+Vi fick felet att conn_b.name inte är en giltig metod. 
+Den var till en början av klassen Adder, vilket gjorde att vi behövde omvandla den till en connector, vilket vi utnyttjade funktionen get_connector() till. 
+Om det vi skickar till funktionen är en ArithmeticConstraint tar vi .out värdet (eftersom vi vill åt resultatet av uträkningen). 
+Om det vi skickar upp inte är det returneras värdet direkt. 
+Med hjälp av detta får vi ut a och b connectors. 
+
+
+
+Och det fungerar i stora drag men vi får fel output. 
+När vi ska få f-32 får vi endast f vilket gör att vi får fel värden. 
+Vi får alltså: #<Connector: f> men vi vill ha #<Connector: f-32>. 
+Här insåg vi däremot att vi i get_connector() inte vill åt out, utan b (32 + f-32 == f). 
+
+
+
+Dock ledde detta till nya fel där våra connectors hamnar i fel ordning och påverkar varandra i skumma ordningar. 
+Istället för att dela 9c med 9, multiplicerar vi c (som borde vara 9*c) med 9 och får ett felvärde. 
+I jämförelse med den givna förväntade loggen får vi detta: 
 
 
 D, [2026-03-01T13:43:07.376917 #885273] DEBUG -- : f ignored request
@@ -68,7 +94,13 @@ D, [2026-03-01T13:43:07.377023 #885273] DEBUG -- : 9 * c == 9*c : 9*c updated
 D, [2026-03-01T13:43:07.377034 #885273] DEBUG -- : 9*c got new value: -1440
 
 
-Här fastnade vi och förstod inte riktigt vart felet ligger. Vi felsökte och såg att f-32 läggs till i @connectors men i slutet så finns det inte kvar längre. Däremot så har vi genom hela 5*f-32 som en connector vilket inte känns rätt. 
+Här fastnade vi och förstod inte riktigt vart felet ligger. 
+Vi felsökte och såg att f-32 läggs till i @connectors men i slutet så finns det inte kvar längre. 
+Däremot så har vi genom hela 5*f-32 som en connector vilket inte känns rätt. 
 
 
-Våra constraints blir inte rätt. I get_connector() får vi väldigt olika utfall beroende på om vi använder oss av b eller out, och vi tror därför att felet i uträkningen ligger här. Om vi använder b får vi rätt värde på en, men använder vi out får vi rätt värde på en annan. Därav känns det som att vad get_connector() returnerar borde baseras lite mer på vem som kallar på den än det generella sätt vi försöker lösa det på just nu.
+
+Våra constraints blir inte rätt. 
+I get_connector() får vi väldigt olika utfall beroende på om vi använder oss av b eller out, och vi tror därför att felet i uträkningen ligger här. 
+Om vi använder b får vi rätt värde på en, men använder vi out får vi rätt värde på en annan. 
+Därav känns det som att vad get_connector() returnerar borde baseras lite mer på vem som kallar på den än det generella sätt vi försöker lösa det på just nu.
