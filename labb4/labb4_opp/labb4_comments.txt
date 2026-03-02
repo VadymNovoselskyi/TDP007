@@ -35,7 +35,17 @@ Uppgift2:
 
 Själva koden:
 --------------------------------
-Deras kod fungerar inte
+Fungerar inte
+
+Adder och Multiplier för - och /
+Borde skapat Subtracter och Divider
+
+Delat upp problemet
+get_connector hade fungerat
+
+just nu
+returnerar .b i get_connector
+hade fungerat om inte - var skapad som (a, out, b)
 
 --------------------------------
 Utvecklarbloggen:
