@@ -36,3 +36,9 @@ Uppgift2:
 Själva koden:
 --------------------------------
 Deras kod fungerar inte
+
+--------------------------------
+Utvecklarbloggen:
+De förklarar utförligt vilka problem de stötte på, och hur de uppfattade deras orsak. 
+Det fanns förklaringar varför deras lösning fungerar endast i vissa fall, men de listade inte ut lösningen till det.
+--------------------------------
