@@ -1,0 +1,38 @@
+------------------------------------------------------------------------------------------------
+Uppgif1:
+
+Själva koden (två extra if-satser)
+--------------------------------
+    # -------------------- ADDED --------------------
+    elsif [b,out].include?(connector) and (not a.has_value?) and b.has_value? and 
+         out.has_value? then
+        ...
+        ...
+    elsif [a,out].include?(connector) and a.has_value? and (not b.has_value?) and 
+         out.has_value? then
+        ...
+        ...
+    end
+
+celsius2fahrenheit ser bra ut, kunde ha använt ConstantConector istället för Connector
+--------------------------------
+  nine = Connector.new("9", 9)
+  five = Connector.new("5", 5)
+  thirtytwo = Connector.new("32", 32)
+--------------------------------
+
+Tester:
+De testar tillräckligt inom Adder, Multipler och celsius2fahrenheit
+--------------------------------
+
+Utvecklarbloggen:
+Beskriver tydligt problem som de stötte på under procssen och ändringar som de gjorde
+--------------------------------
+
+
+------------------------------------------------------------------------------------------------
+Uppgift2:
+
+Själva koden:
+--------------------------------
+Deras kod fungerar inte
